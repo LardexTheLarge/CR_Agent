@@ -12,7 +12,7 @@
 # Mechanics Risk
 
 Easy: Arrows, Flying Machine
-Medium: Goblin Cage Evolution(building, goblin spawn on building death, evo effect after 3rd use), Royal Recruits Evolution(6 units spawns in horizontal line, shields, evo effect on 2nd use), Barbarian Barrel(rolling area effect + spawn), Zappies(3-unit triangle spawn, stun/attack reset), Royal Hogs(4-unit swarm, river jump, building-only targeting)
+Medium: Goblin Cage Evolution(building, goblin spawn on building death, evo effect after 3rd use), Royal Recruits Evolution(6 units spawns in horizontal line, shields), Barbarian Barrel(rolling area effect + spawn), Zappies(3-unit triangle spawn, stun/attack reset), Royal Hogs(4-unit swarm, river jump, building-only targeting)
 Hard: Little Prince(champion ability, summoned charging Guardian)
 
 # Success Definition

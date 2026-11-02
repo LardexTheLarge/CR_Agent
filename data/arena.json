@@ -1,0 +1,256 @@
+{
+  "schema_version": 2,
+  "arena_id": "standard_ladder_arena",
+  "name": "Standard Arena",
+  "description": "Combined arena geometry: bounds, river, bridges, towers, deployment zones, movement rules and match rules. Replaces the separate arena.json, river.json and bridge.json.",
+  "meta": {
+    "game_version": "160402020",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "integer_only": true
+    },
+    "coordinate_system": {
+      "origin": "arena center; the center is a tile corner, not a tile center",
+      "x": "left (-) to right (+)",
+      "y": "own back edge (-16000) to enemy back edge (+16000); own side is y < 0",
+      "tile_grid": "tile edges fall on whole multiples of 1000; tile centers fall on odd multiples of 500",
+      "alignment_rule": "an odd-width footprint (3x3) has its center on a tile center (x and y both end in 500); an even-width footprint (4x4) has its center on a tile corner (x and y both end in 000)"
+    },
+    "provenance_legend": {
+      "app": "read by the user from the Clash Royale app",
+      "web": "public source cross-checked on 2026-11-01",
+      "derived": "computed from other fields in this file",
+      "design_decision": "rule chosen for the simulator; verify in-game"
+    }
+  },
+  "bounds": {
+    "provenance": "web",
+    "x_min_millitiles": -9000,
+    "x_max_millitiles": 9000,
+    "y_min_millitiles": -16000,
+    "y_max_millitiles": 16000,
+    "width_tiles": 18,
+    "height_tiles": 32
+  },
+  "river": {
+    "provenance": "web",
+    "y_min_millitiles": -1000,
+    "y_max_millitiles": 1000,
+    "height_millitiles": 2000,
+    "spans_full_width": true,
+    "ground_can_enter": false,
+    "ground_can_stop": false,
+    "troop_deploy_allowed": false,
+    "building_place_allowed": false,
+    "spell_can_target": true,
+    "blocks_projectiles": false,
+    "blocks_line_of_sight": false,
+    "air_ignores": true,
+    "jump_units_ignore": true
+  },
+  "bridges": [
+    {
+      "bridge_id": "left_bridge",
+      "provenance": "app",
+      "center_x_millitiles": -4500,
+      "center_y_millitiles": 0,
+      "x_min_millitiles": -6000,
+      "x_max_millitiles": -3000,
+      "y_min_millitiles": -1000,
+      "y_max_millitiles": 1000,
+      "width_millitiles": 3000,
+      "length_millitiles": 2000
+    },
+    {
+      "bridge_id": "right_bridge",
+      "provenance": "app",
+      "center_x_millitiles": 4500,
+      "center_y_millitiles": 0,
+      "x_min_millitiles": 3000,
+      "x_max_millitiles": 6000,
+      "y_min_millitiles": -1000,
+      "y_max_millitiles": 1000,
+      "width_millitiles": 3000,
+      "length_millitiles": 2000
+    }
+  ],
+  "bridge_rules": {
+    "ground_can_cross": true,
+    "air_can_cross": true,
+    "troop_deploy_allowed": false,
+    "building_place_allowed": false,
+    "spell_can_target": true,
+    "attackable": false,
+    "blocks_projectiles": false,
+    "blocks_line_of_sight": false
+  },
+  "lanes": {
+    "left": {
+      "center_x_millitiles": -4500,
+      "x_min_millitiles": -9000,
+      "x_max_millitiles": 0
+    },
+    "right": {
+      "center_x_millitiles": 4500,
+      "x_min_millitiles": 0,
+      "x_max_millitiles": 9000
+    },
+    "split_x_millitiles": 0
+  },
+  "towers": {
+    "footprints_millitiles": {
+      "princess": {
+        "width": 3000,
+        "height": 3000
+      },
+      "king": {
+        "width": 4000,
+        "height": 4000
+      }
+    },
+    "footprint_provenance": "web",
+    "friendly": {
+      "king": {
+        "x_millitiles": 0,
+        "y_millitiles": -13000,
+        "y_provenance": "derived from '1 tile from the back' and a 4x4 footprint"
+      },
+      "left_princess": {
+        "x_millitiles": -4500,
+        "y_millitiles": -9500,
+        "y_provenance": "design_decision, grid-aligned best guess"
+      },
+      "right_princess": {
+        "x_millitiles": 4500,
+        "y_millitiles": -9500,
+        "y_provenance": "design_decision, grid-aligned best guess"
+      }
+    },
+    "enemy": {
+      "king": {
+        "x_millitiles": 0,
+        "y_millitiles": 13000
+      },
+      "left_princess": {
+        "x_millitiles": -4500,
+        "y_millitiles": 9500
+      },
+      "right_princess": {
+        "x_millitiles": 4500,
+        "y_millitiles": 9500
+      }
+    },
+    "princess_y_formula": "center_y = -(1000 + N*1000 + 1500), where N is the number of tiles between the river edge and the front of the princess tower. N = 7 gives -9500. Count N in the app and correct this value if it differs.",
+    "king_activation": {
+      "provenance": "web",
+      "initial_state": "inactive",
+      "activates_when": [
+        "king_tower_takes_damage",
+        "either_own_princess_tower_destroyed"
+      ],
+      "persists_until_match_end": true,
+      "wake_up_delay_ticks": null,
+      "wake_up_delay_status": "unverified: the king takes a few seconds to bring out the cannon"
+    }
+  },
+  "deployment": {
+    "tile_snapped": true,
+    "snap_note": "Placement snaps to tile centers. A troop spawns at the tile center plus its spawn offsets.",
+    "snap_provenance": "design_decision",
+    "friendly_base_zone": {
+      "x_min_millitiles": -9000,
+      "x_max_millitiles": 9000,
+      "y_min_millitiles": -16000,
+      "y_max_millitiles": -1000
+    },
+    "enemy_base_zone": {
+      "x_min_millitiles": -9000,
+      "x_max_millitiles": 9000,
+      "y_min_millitiles": 1000,
+      "y_max_millitiles": 16000
+    },
+    "forbidden_for_troops": ["own_tower_footprints", "river", "bridges"],
+    "forbidden_for_buildings": ["own_tower_footprints", "river", "bridges"],
+    "building_rule": "the whole footprint (3x3, or 2x2 for Tesla-sized buildings) must sit inside the legal zone on the tile grid; there is no separate border margin",
+    "building_rule_provenance": "design_decision",
+    "pocket_zones": {
+      "trigger": "destroying an enemy princess tower opens a pocket on that lane's side of the enemy half",
+      "trigger_provenance": "web",
+      "persists_until_match_end": true,
+      "left_pocket_opens_when": "enemy_left_princess_destroyed",
+      "right_pocket_opens_when": "enemy_right_princess_destroyed",
+      "geometry_millitiles": null,
+      "geometry_status": "NEEDS MEASUREMENT: x range and how many tiles deep past the river. Count them in the app after a princess tower falls.",
+      "wide_formation_rule": "Royal Recruits need both princess towers destroyed before they can be deployed in a pocket, because the 15000 formation is wider than one lane half (9000). Derived from the width and consistent with community wiki.",
+      "wide_formation_rule_provenance": "derived"
+    }
+  },
+  "movement": {
+    "ground": {
+      "must_use_bridges": true,
+      "diagonal_allowed": true,
+      "repath_when_obstacle_appears": true,
+      "provenance": "web"
+    },
+    "air": {
+      "ignore_river": true,
+      "ignore_bridges": true,
+      "direct_path": true
+    },
+    "river_jumpers": {
+      "units": ["hog_rider", "royal_hogs", "ram_rider"],
+      "provenance": "web",
+      "note": "Targeting and attackability while jumping belong in each card's own file."
+    }
+  },
+  "match_rules": {
+    "provenance": "web",
+    "note": "Belongs in a separate rules.json once Phase 3 starts; kept here for now.",
+    "regulation_ticks": 3600,
+    "overtime_ticks": 2400,
+    "total_ticks": 6000,
+    "king_tower_destroyed": "instant win with 3 crowns",
+    "overtime": "sudden death: the first tower destroyed wins",
+    "tiebreaker_at_overtime_end": "the side whose lowest-HP tower has the lowest HP loses; equal lowest HP is a draw",
+    "starting_elixir": 5,
+    "elixir_cap": 10,
+    "elixir_schedule": [
+      {
+        "from_tick": 0,
+        "to_tick": 2400,
+        "multiplier": 1,
+        "subunits_per_tick": 1
+      },
+      {
+        "from_tick": 2400,
+        "to_tick": 4800,
+        "multiplier": 2,
+        "subunits_per_tick": 2
+      },
+      {
+        "from_tick": 4800,
+        "to_tick": 6000,
+        "multiplier": 3,
+        "subunits_per_tick": 3
+      }
+    ],
+    "schedule_note": "2x covers the final minute of regulation and the first minute of overtime; 3x covers the last minute of overtime. 3x rate (one elixir per 2.8/3 s) is assumed from the 1x rate; confirm in-app.",
+    "elixir_model": {
+      "subunits_per_elixir": 56,
+      "cap_subunits": 560,
+      "note": "Store elixir in 56ths. At 1x one elixir takes 56 ticks, so every tick adds 1 subunit; 2x adds 2; 3x adds 3. A card costing 7 elixir costs 392 subunits. This keeps 3x exact (2.8 s / 3 is not a whole number of ticks).",
+      "starting_subunits": 280
+    }
+  },
+  "unverified": [
+    "Princess tower center y (-9500 is a grid-aligned guess; the old -10000 was not on the tile grid).",
+    "Pocket zone geometry.",
+    "Tile-snapped placement and spawn offsets measured from the snapped tile center.",
+    "King tower wake-up delay in ticks.",
+    "Navigation mesh and exact bridge centering while crossing.",
+    "That the bridge tiles cannot be deployed on (assumed because they overlap the river rows).",
+    "Tower footprints come from a community wiki; confirm 4x4 and 3x3 in the app."
+  ]
+}

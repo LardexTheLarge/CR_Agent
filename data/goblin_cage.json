@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "card_id": "goblin_cage_evolution",
+  "name": "Goblin Cage",
+  "evolution_name": "Goblin Cage Evolution",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard.",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "integer_only": true
+    }
+  },
+
+  "base": {
+    "provenance": "public_card_stats",
+
+    "elixir": 4,
+    "rarity": "rare",
+    "type": "building",
+
+    "lifetime_s": 30,
+    "lifetime_ticks": 600,
+
+    "hitpoints": 2126,
+
+    "targets": [],
+
+    "deploy_time_s": 1.0,
+    "deploy_time_ticks": 20,
+
+    "sight_range_tiles": 7.5,
+    "sight_range_millitiles": 7500,
+
+    "collision_radius_tiles": 1.5,
+    "collision_radius_millitiles": 1500
+  },
+
+  "building": {
+    "provenance": "card_behavior",
+
+    "building_type": "spawner",
+
+    "can_attack": false,
+
+    "generates_troop_on_destroy": true,
+
+    "spawn_trigger": ["destroyed", "lifetime_expired"]
+  },
+
+  "spawned_unit": {
+    "provenance": "public_card_stats",
+
+    "card_id": "goblin_brawler",
+
+    "count": 1,
+
+    "spawn_delay_ticks": 0,
+
+    "inherits_level": true
+  },
+
+  "goblin_brawler": {
+    "provenance": "public_card_stats",
+
+    "hitpoints": 1526,
+
+    "damage": 281,
+
+    "dps": 187,
+
+    "targets": ["ground"],
+
+    "movement_speed": "very_fast",
+    "movement_speed_value": 120,
+
+    "range_tiles": 0.7,
+    "range_millitiles": 700,
+
+    "hit_speed_s": 1.5,
+    "hit_speed_ticks": 30,
+
+    "first_hit_s": 0.4,
+    "first_hit_ticks": 8,
+
+    "sight_range_tiles": 7.5,
+    "sight_range_millitiles": 7500
+  },
+
+  "evolution": {
+    "enabled": true,
+
+    "cycles_required": 2,
+
+    "special_ability": "kiddnaps the nearest enemy troop and drags it to the cage until the cage is destroyed or the troop dies.",
+
+    "description": "When the Goblin Cage breaks, the Goblin Brawler spanws and attacks the nearest ground unit.",
+
+    "rage_effect": {
+      "trigger": "brawler_spawn",
+
+      "radius_tiles": 3.5,
+      "radius_millitiles": 3500,
+
+      "duration_s": 6.0,
+      "duration_ticks": 120
+    }
+  },
+
+  "movement": {
+    "provenance": "app",
+
+    "ground_unit": true,
+
+    "can_cross_river": false,
+
+    "pathfinding_mode": "standard"
+  },
+
+  "targeting": {
+    "provenance": "public_card_stats",
+
+    "primary_targets": ["ground"],
+
+    "attack_preference": "nearest_target"
+  },
+
+  "combat": {
+    "provenance": "public_card_stats",
+
+    "attack_type": "melee",
+
+    "damage_per_hit": 281,
+
+    "attack_interval_ticks": 30,
+
+    "first_attack_ticks": 8,
+
+    "range_millitiles": 700
+  },
+
+  "derived": {
+    "building_hitpoints": 2126,
+
+    "spawned_unit_hitpoints": 1526,
+
+    "combined_hitpoints": 3652,
+
+    "spawned_unit_dps": 187
+  },
+
+  "unverified": [
+    "Exact evolution rage duration in engine ticks.",
+    "Exact spawn-frame ordering when cage is destroyed by spells.",
+    "Exact collision radius for the building footprint."
+  ]
+}

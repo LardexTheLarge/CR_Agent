@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "card_id": "little_prince",
+  "name": "Little Prince",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard.",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "integer_only": true
+    }
+  },
+
+  "base": {
+    "provenance": "public_card_stats",
+
+    "elixir": 3,
+    "rarity": "champion",
+    "type": "troop",
+
+    "count": 1,
+
+    "hitpoints": 698,
+    "damage": 104,
+
+    "targets": ["ground", "air"],
+
+    "movement_speed": "medium",
+    "movement_speed_value": 60,
+
+    "range_tiles": 5.5,
+    "range_millitiles": 5500,
+
+    "deploy_time_s": 1.0,
+    "deploy_time_ticks": 20,
+
+    "first_hit_s": 0.4,
+    "first_hit_ticks": 8,
+
+    "collision_radius_tiles": 0.5,
+    "collision_radius_millitiles": 500,
+
+    "mass": 4
+  },
+
+  "targeting": {
+    "provenance": "public_card_stats",
+
+    "primary_targets": ["ground", "air"],
+
+    "attack_preference": "nearest_target"
+  },
+
+  "combat": {
+    "provenance": "card_behavior",
+
+    "attack_type": "ranged",
+
+    "damage_per_hit": 104,
+
+    "projectile_type": "crossbow_bolt",
+
+    "projectile_speed": 800,
+
+    "range_millitiles": 5500,
+
+    "ramp_up_attack_speed": true,
+
+    "attack_stages": [
+      {
+        "stage": 1,
+        "hit_speed_s": 1.2,
+        "hit_speed_ticks": 24
+      },
+      {
+        "stage": 2,
+        "hit_speed_s": 0.6,
+        "hit_speed_ticks": 12
+      },
+      {
+        "stage": 3,
+        "hit_speed_s": 0.4,
+        "hit_speed_ticks": 8
+      }
+    ],
+
+    "reset_on_movement": true
+  },
+
+  "champion_ability": {
+    "enabled": true,
+
+    "name": "Royal Rescue",
+
+    "elixir_cost": 3,
+
+    "cooldown_s": 30.0,
+
+    "cooldown_ticks": 600,
+
+    "cast_time_s": 0.944,
+
+    "cast_time_ticks": 19,
+
+    "summons_unit": true
+  },
+
+  "ability_effect": {
+    "provenance": "public_card_stats",
+
+    "charge_damage": 320,
+
+    "knockback_enabled": true,
+
+    "charge_radius_tiles": 2.5,
+
+    "charge_radius_millitiles": 2500
+  },
+
+  "guardian": {
+    "provenance": "public_card_stats",
+
+    "card_id": "guardian",
+
+    "count": 1,
+
+    "hitpoints": 1600,
+
+    "damage": 232,
+
+    "charge_damage": 320,
+
+    "targets": ["ground"],
+
+    "movement_speed": "medium",
+    "movement_speed_value": 60,
+
+    "range_tiles": 1.2,
+    "range_millitiles": 1200,
+
+    "hit_speed_s": 1.2,
+    "hit_speed_ticks": 24,
+
+    "first_hit_s": 0.4,
+    "first_hit_ticks": 8
+  },
+
+  "projectile": {
+    "provenance": "card_behavior",
+
+    "tracks_target": true,
+
+    "can_target_air": true,
+
+    "can_target_ground": true,
+
+    "area_damage": false,
+
+    "piercing": false
+  },
+
+  "evolution": null,
+
+  "derived": {
+    "little_prince_hitpoints": 698,
+
+    "guardian_hitpoints": 1600,
+
+    "combined_hitpoints_after_ability": 2298,
+
+    "ability_total_elixir_cost": 6
+  },
+
+  "unverified": [
+    "Exact stage transition timing between attack-speed ramps.",
+    "Exact engine tick when ramp-up resets after movement.",
+    "Exact Guardian spawn coordinates relative to Little Prince.",
+    "Exact knockback distance variation for Royal Rescue."
+  ]
+}

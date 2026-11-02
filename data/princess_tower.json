@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "card_id": "princess_tower",
+  "name": "Princess Tower",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard tower.",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "integer_only": true
+    }
+  },
+
+  "base": {
+    "provenance": "public_game_data",
+
+    "type": "tower",
+
+    "count": 2,
+
+    "hitpoints": 3052,
+
+    "damage": 109,
+
+    "dps": 109,
+
+    "targets": ["ground", "air"],
+
+    "range_tiles": 7.5,
+    "range_millitiles": 7500,
+
+    "hit_speed_s": 1.0,
+    "hit_speed_ticks": 20,
+
+    "first_hit_s": 0.4,
+    "first_hit_ticks": 8,
+
+    "sight_range_tiles": 7.5,
+    "sight_range_millitiles": 7500,
+
+    "collision_radius_tiles": 1.5,
+    "collision_radius_millitiles": 1500,
+
+    "air_targetable": false,
+
+    "indestructible_until_match_start": true
+  },
+
+  "targeting": {
+    "provenance": "game_rules",
+
+    "primary_targets": ["ground", "air"],
+
+    "attack_preference": "nearest_target",
+
+    "retarget_delay_ticks": 0,
+
+    "supports_tower_assist": true
+  },
+
+  "combat": {
+    "provenance": "public_game_data",
+
+    "attack_type": "ranged",
+
+    "damage_per_hit": 109,
+
+    "attack_interval_ticks": 20,
+
+    "first_attack_ticks": 8,
+
+    "range_millitiles": 7500,
+
+    "projectile_type": "arrow",
+
+    "projectile_speed": "instant_like"
+  },
+
+  "projectile": {
+    "provenance": "card_behavior",
+
+    "tracks_target": true,
+
+    "can_target_air": true,
+
+    "can_target_ground": true,
+
+    "area_damage": false,
+
+    "piercing": false
+  },
+
+  "tower_rules": {
+    "provenance": "game_rules",
+
+    "tower_class": "princess",
+
+    "activates_at_match_start": true,
+
+    "provides_territory_control": true,
+
+    "can_be_destroyed": true,
+
+    "destroyed_state": {
+      "blocks_targeting": false,
+      "provides_attack_support": false
+    }
+  },
+
+  "placement": {
+    "provenance": "arena_definition",
+
+    "movable": false,
+
+    "spawnable": false,
+
+    "position_source": "arena_layout"
+  },
+
+  "evolution": null,
+
+  "derived": {
+    "total_towers_per_player": 2,
+
+    "combined_princess_tower_hitpoints": 6104,
+
+    "damage_per_second": 109
+  },
+
+  "unverified": [
+    "Exact first-target acquisition timing.",
+    "Exact projectile travel speed used internally.",
+    "Exact collision radius in engine units.",
+    "Exact tower targeting priority when multiple units enter range simultaneously."
+  ]
+}

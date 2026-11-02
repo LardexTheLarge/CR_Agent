@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "card_id": "arrows",
+  "name": "Arrows",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard. King tower and princess towers are also level 11.",
+    "web_cross_check_date": "2026-11-01",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along the lane; own side is y < 0",
+      "integer_only": true
+    },
+    "provenance_legend": {
+      "app": "read by the user from the Clash Royale app",
+      "supercell": "official Supercell balance notes",
+      "liquipedia": "Liquipedia Clash Royale wiki",
+      "derived": "computed from other fields in this file",
+      "design_decision": "rule chosen for the simulator because no public source states it; verify in-game"
+    }
+  },
+
+  "unit_tables": {
+    "timing_formulas": [
+      "impact_tick = deploy_tick + travel_ticks",
+      "total_damage = damage_per_wave * wave_count"
+    ]
+  },
+
+  "base": {
+    "provenance": "liquipedia",
+    "elixir": 3,
+    "type": "spell",
+    "rarity": "common",
+
+    "targets": ["ground_troop", "air_troop", "building", "tower"],
+
+    "radius_tiles": 3.5,
+    "radius_millitiles": 3500,
+
+    "wave_count": 3,
+
+    "damage_per_wave": 122,
+    "total_damage": 366,
+
+    "crown_tower_damage_per_wave": 31,
+    "total_crown_tower_damage": 93,
+
+    "projectile_type": "arrow_volley",
+
+    "deploy_time_s": 1.0,
+    "deploy_time_ticks": 20,
+
+    "travel_time_s": 1.0,
+    "travel_time_ticks": 20,
+
+    "impact_tick_formula": "deploy_time_ticks + travel_time_ticks",
+
+    "knockback": false,
+    "stun": false,
+    "slow": false
+  },
+
+  "spell_pattern": {
+    "provenance": "app",
+
+    "shape": "circle",
+
+    "radius_millitiles": 3500,
+
+    "wave_count": 3,
+
+    "wave_spacing_ticks": 1,
+
+    "all_waves_same_area": true,
+
+    "friendly_fire": false
+  },
+
+  "projectile": {
+    "provenance": "design_decision",
+
+    "spawn_type": "off_map",
+
+    "impact_mode": "area_damage",
+
+    "tracks_target": false,
+
+    "can_miss": false,
+
+    "affected_area_shape": "circle",
+
+    "affected_area_radius_millitiles": 3500
+  },
+
+  "damage_model": {
+    "provenance": "liquipedia",
+
+    "damage_application": "three_waves",
+
+    "wave_damage": 122,
+
+    "wave_count": 3,
+
+    "total_damage": 366,
+
+    "crown_tower_damage_multiplier_per_mille": 254,
+
+    "crown_tower_damage_note": "31 damage per wave at tournament standard"
+  },
+
+  "placement": {
+    "provenance": "derived",
+
+    "targeting_mode": "free_cast",
+
+    "legal_target_area": "any spell-legal arena coordinate",
+
+    "requires_enemy_target": false,
+
+    "cursor_clamped_to_arena": true
+  },
+
+  "evolution": null,
+
+  "unverified": [
+    "Travel time may vary slightly based on engine implementation.",
+    "Wave spacing measured as simulator assumption; verify in-game.",
+    "Exact internal crown-tower damage multiplier should be confirmed from game files.",
+    "Whether all three waves resolve on consecutive ticks or same tick."
+  ]
+}

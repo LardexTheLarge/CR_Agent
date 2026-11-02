@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "card_id": "barbarian_barrel",
+  "name": "Barbarian Barrel",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard.",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "integer_only": true
+    }
+  },
+
+  "base": {
+    "provenance": "public_card_stats",
+
+    "elixir": 2,
+    "rarity": "epic",
+    "type": "spell",
+
+    "targets": ["ground"],
+
+    "damage": 219,
+
+    "radius_tiles": 1.2,
+    "radius_millitiles": 1200,
+
+    "deploy_time_s": 0.0,
+    "deploy_time_ticks": 0,
+
+    "roll_distance_tiles": 5.0,
+    "roll_distance_millitiles": 5000,
+
+    "roll_speed_tiles_per_second": 5.0,
+
+    "spawns_unit": true
+  },
+
+  "barrel": {
+    "provenance": "card_behavior",
+
+    "object_type": "rolling_projectile",
+
+    "can_hit_multiple_targets": true,
+
+    "hits_ground_only": true,
+
+    "affects_buildings": false,
+
+    "knockback": true,
+
+    "knockback_strength": "light",
+
+    "piercing": true,
+
+    "destroyed_by_damage": false
+  },
+
+  "trajectory": {
+    "provenance": "app",
+
+    "path_type": "straight_line",
+
+    "max_distance_millitiles": 5000,
+
+    "stops_at_end_of_path": true,
+
+    "can_cross_river": true,
+
+    "collision_check": "continuous"
+  },
+
+  "damage_model": {
+    "provenance": "public_card_stats",
+
+    "damage_application": "contact",
+
+    "damage_per_hit": 219,
+
+    "can_damage_same_target_multiple_times": false,
+
+    "hit_interval_ticks": 0
+  },
+
+  "spawned_unit": {
+    "provenance": "public_card_stats",
+
+    "card_id": "barbarian",
+
+    "spawn_trigger": "barrel_end_of_roll",
+
+    "count": 1,
+
+    "spawn_delay_ticks": 0,
+
+    "inherits_level": true,
+
+    "spawn_offset_millitiles": 0
+  },
+
+  "spawned_barbarian": {
+    "provenance": "public_card_stats",
+
+    "hitpoints": 832,
+
+    "damage": 186,
+
+    "dps": 124,
+
+    "targets": ["ground"],
+
+    "movement_speed": "medium",
+
+    "range_tiles": 1.2,
+    "range_millitiles": 1200,
+
+    "hit_speed_s": 1.5,
+    "hit_speed_ticks": 30
+  },
+
+  "placement": {
+    "provenance": "app",
+
+    "targeting_mode": "directional_spell",
+
+    "requires_destination": true,
+
+    "legal_target_area": "standard_spell_area"
+  },
+
+  "evolution": null,
+
+  "derived": {
+    "initial_spell_damage": 219,
+
+    "spawned_troop_count": 1,
+
+    "combined_value_components": [
+      "rolling_damage",
+      "knockback",
+      "spawned_barbarian"
+    ]
+  },
+
+  "unverified": [
+    "Exact internal barrel collision radius.",
+    "Exact barrel movement speed in engine units.",
+    "Exact knockback force values.",
+    "Exact spawn frame for Barbarian after barrel expiration."
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "card_id": "zappies",
+  "name": "Zappies",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard.",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "integer_only": true
+    }
+  },
+
+  "base": {
+    "provenance": "public_card_stats",
+
+    "elixir": 4,
+    "rarity": "common",
+    "type": "troop",
+
+    "count": 3,
+
+    "hitpoints": 530,
+    "damage": 116,
+    "dps": 53,
+
+    "targets": ["ground", "air"],
+
+    "movement_speed": "medium",
+    "movement_speed_value": 60,
+
+    "range_tiles": 4.5,
+    "range_millitiles": 4500,
+
+    "hit_speed_s": 2.2,
+    "hit_speed_ticks": 44,
+
+    "first_hit_s": 0.8,
+    "first_hit_ticks": 16,
+
+    "deploy_time_s": 1.0,
+    "deploy_time_ticks": 20,
+
+    "sight_range_tiles": 7.5,
+    "sight_range_millitiles": 7500,
+
+    "collision_radius_tiles": 0.6,
+    "collision_radius_millitiles": 600,
+
+    "mass": 3,
+
+    "air_targetable": true
+  },
+
+  "spawn_pattern": {
+    "provenance": "app",
+
+    "formation": "horizontal",
+
+    "unit_count": 3,
+
+    "spacing_millitiles": 1200,
+
+    "supports_split_lane_deployment": false
+  },
+
+  "movement": {
+    "provenance": "app",
+
+    "ground_unit": true,
+
+    "can_cross_river": false,
+
+    "pathfinding_mode": "standard"
+  },
+
+  "targeting": {
+    "provenance": "public_card_stats",
+
+    "primary_targets": ["ground", "air"],
+
+    "attack_preference": "nearest_target"
+  },
+
+  "combat": {
+    "provenance": "public_card_stats",
+
+    "attack_type": "ranged",
+
+    "damage_per_hit": 116,
+
+    "attack_interval_ticks": 44,
+
+    "first_attack_ticks": 16,
+
+    "range_millitiles": 4500,
+
+    "projectile_type": "electro_bolt"
+  },
+
+  "status_effects": {
+    "provenance": "card_behavior",
+
+    "stun_enabled": true,
+
+    "stun_duration_s": 0.5,
+
+    "stun_duration_ticks": 10,
+
+    "resets_attack_animation": true,
+
+    "resets_charge_attacks": true
+  },
+
+  "projectile": {
+    "provenance": "card_behavior",
+
+    "tracks_target": true,
+
+    "can_target_air": true,
+
+    "can_target_ground": true,
+
+    "area_damage": false,
+
+    "piercing": false
+  },
+
+  "evolution": null,
+
+  "derived": {
+    "total_card_hitpoints": 1590,
+
+    "total_card_damage_per_attack_cycle": 348,
+
+    "total_card_dps": 159
+  },
+
+  "unverified": [
+    "Exact collision radius.",
+    "Exact spawn spacing in internal game units.",
+    "Exact first-hit timing after retargeting.",
+    "Simulator should verify stun application order when multiple Zappies fire simultaneously."
+  ]
+}

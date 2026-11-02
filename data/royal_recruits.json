@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "card_id": "royal_recruits",
+  "name": "Royal Recruits",
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard. King tower and princess towers are also level 11.",
+    "web_cross_check_date": "2026-11-01",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along the lane; own side is y < 0",
+      "integer_only": true
+    },
+    "provenance_legend": {
+      "app": "read by the user from the Clash Royale app",
+      "supercell": "official Supercell balance notes",
+      "liquipedia": "Liquipedia Clash Royale wiki, evolution page, level 11 row",
+      "derived": "computed from other fields in this file",
+      "design_decision": "rule chosen for the simulator because no public source states it; verify in-game"
+    }
+  },
+  "unit_tables": {
+    "speed_tiers": {
+      "slow": {
+        "in_game_value": 45,
+        "tiles_per_sec": 0.75,
+        "millitiles_per_tick": 37
+      },
+      "medium": {
+        "in_game_value": 60,
+        "tiles_per_sec": 1.0,
+        "millitiles_per_tick": 50
+      },
+      "fast": {
+        "in_game_value": 90,
+        "tiles_per_sec": 1.5,
+        "millitiles_per_tick": 75
+      },
+      "very_fast": {
+        "in_game_value": 120,
+        "tiles_per_sec": 2.0,
+        "millitiles_per_tick": 100
+      }
+    },
+    "speed_tier_note": "slow = 0.75 tiles/s is 37.5 millitiles/tick, so it is stored as 37. Not used by this card; resolve the rounding rule before any slow card is added.",
+    "melee_ranges_millitiles": {
+      "short": 800,
+      "medium": 1200,
+      "long": 1600
+    },
+    "timing_formulas": [
+      "first_hit_ticks = hit_speed_ticks - load_time_ticks",
+      "load_time_ticks = hit_speed_ticks - first_hit_ticks"
+    ]
+  },
+  "base": {
+    "provenance": "app",
+    "elixir": 7,
+    "type": "troop",
+    "rarity": "common",
+    "unit_count": 6,
+    "per_unit_stats": true,
+    "hitpoints": 547,
+    "shield_hitpoints": 240,
+    "damage": 133,
+    "target_types": ["ground_troop", "building", "tower"],
+    "attacks_air": false,
+    "hit_speed_s": 1.3,
+    "hit_speed_ticks": 26,
+    "load_time_s": 0.8,
+    "load_time_ticks": 16,
+    "first_hit_s": 0.5,
+    "first_hit_ticks": 10,
+    "first_hit_reference_point": "deploy_completion",
+    "timing_check": "26 - 16 = 10",
+    "deploy_time_s": 1.0,
+    "deploy_time_ticks": 20,
+    "movement_speed_tier": "medium",
+    "speed_millitiles_per_tick": 50,
+    "range_tier": "melee_long",
+    "range_millitiles": 1600,
+    "sight_range_millitiles": 5500,
+    "collision_radius_millitiles": 500,
+    "mass": 5,
+    "splash_radius_millitiles": 0,
+    "death_spawn": null,
+    "lifetime_ticks": 0,
+    "projectile": null
+  },
+  "spawn": {
+    "provenance": "app",
+    "pattern": "horizontal_line",
+    "offsets_millitiles": [
+      {
+        "x": -7000,
+        "y": 0
+      },
+      {
+        "x": -4000,
+        "y": 0
+      },
+      {
+        "x": -500,
+        "y": 0
+      },
+      {
+        "x": 500,
+        "y": 0
+      },
+      {
+        "x": 4000,
+        "y": 0
+      },
+      {
+        "x": 7000,
+        "y": 0
+      }
+    ],
+    "formation_width_millitiles": 15000,
+    "formation_width_check": "14000 between outer centers + 2 x 500 radius = 15000",
+    "cursor_position": "midpoint between the two center recruits (x = 0 in formation space)",
+    "rigid_formation": true,
+    "rigid_formation_note": "Never compressed or slid inward. The cursor is clamped instead (see placement)."
+  },
+  "placement": {
+    "provenance": "derived",
+    "cursor_snaps_to": "tile centers",
+    "legal_cursor_x_millitiles": [-1500, -500, 500, 1500],
+    "cursor_x_window_millitiles": {
+      "min": -2000,
+      "max": 2000,
+      "note": "tile edges of the 4 legal columns; matches the in-app +/-2000 limit"
+    },
+    "cursor_x_derivation": "the outer recruit sits 7000 from the cursor and its 500 radius must stay inside the 9000 boundary, so |cursor_x| <= 1500 (cursor is a tile center)",
+    "outer_recruit_center_max_abs_x_millitiles": 8500,
+    "outer_recruit_edge_at_limit": "8500 + 500 = 9000, exactly on the boundary, so nothing overhangs",
+    "cursor_y": "tile centers inside arena.json deployment.friendly_base_zone, excluding river, bridges and own tower footprints",
+    "own_side": "y < 0",
+    "pocket_rule": "may only be deployed in an enemy pocket after BOTH enemy princess towers are destroyed (see arena.json deployment.pocket_zones)",
+    "edge_rule": "No separate edge rule. Restricting the cursor to 4 columns is the edge rule; the formation is never compressed or slid."
+  },
+  "shield": {
+    "provenance": "app",
+    "tracked_per_unit": true,
+    "hitpoints": 240,
+    "absorbs_before_hitpoints": true,
+    "overflow_rule": "any single hit that breaks the shield removes only the shield; all excess damage is discarded regardless of size",
+    "applies_to_damage_sources": ["troop_attack", "spell", "splash", "tower"],
+    "broken_event": "shield_break"
+  },
+  "evolution": {
+    "provenance": "app",
+    "elixir": 7,
+    "stats_differ_from_base": false,
+    "stats_note": "Evo stats equal base stats except for charge. Liquipedia's evolution page also lists 547 HP, 240 shield, 133 damage and 266 charge damage at level 11.",
+    "activation": {
+      "cycles_required": 1,
+      "cycles_provenance": "liquipedia",
+      "counter_scope": "per card, per match",
+      "initial_state": "normal",
+      "states": ["NORMAL", "EVO_READY"],
+      "transitions": [
+        {
+          "from": "NORMAL",
+          "event": "play_normal",
+          "to": "EVO_READY",
+          "condition": "plays_since_last_evo >= cycles_required"
+        },
+        {
+          "from": "EVO_READY",
+          "event": "play_evo",
+          "to": "NORMAL",
+          "effect": "plays_since_last_evo = 0"
+        }
+      ],
+      "player_choice": false,
+      "player_choice_note": "While EVO_READY every play is the evo version, so the RL action space needs no extra evo action.",
+      "elixir_cost_same_as_normal": true,
+      "ready_flag_changes_when": "at the end of the normal play. The card cannot be played again until it re-enters the hand, so this matches 'evo-ready after re-entering the hand'.",
+      "observation_recommendation": "expose evo_ready for each of the 4 hand slots and the next card",
+      "next_card_slot_display": "unverified: check in-app whether the next-card preview already shows the evo form"
+    },
+    "charge": {
+      "provenance": "supercell",
+      "provenance_note": "2.5 tiles confirmed by Supercell October 2025 balance notes (Prince, Evolved Royal Recruits, Ram Rider). Charge speed and damage match Liquipedia.",
+      "tracked_per_unit": true,
+      "requires_shield_broken": true,
+      "distance_millitiles": 2500,
+      "distance_metric": "path length actually moved, summed per tick",
+      "distance_metric_provenance": "design_decision",
+      "progress_starts_at": "the tick the shield breaks",
+      "speed_millitiles_per_tick": 100,
+      "speed_tier": "very_fast",
+      "damage": 266,
+      "damage_multiplier": 2,
+      "damage_base": 133,
+      "hit_wind_up_ticks": 0,
+      "hit_trigger": "contact",
+      "hit_targets": ["ground_troop", "building", "tower"],
+      "splash_radius_millitiles": 0,
+      "continues_if_target_dies_or_leaves_sight": true,
+      "ends_on": ["charged_hit_landed", "stun", "freeze", "pushback"],
+      "progress_resets_to_zero_on": [
+        "charged_hit_landed",
+        "stun",
+        "freeze",
+        "pushback",
+        "stopped_to_attack_before_charge_ready"
+      ],
+      "progress_not_reset_by": ["body_blocking", "slow"],
+      "slowed_movement_counts": "only the distance actually moved is added to progress",
+      "after_reset": "the recruit must move 2500 millitiles to charge again",
+      "reset_list_provenance": "design_decision, built from the user's in-game rules",
+      "attack_timing_after_reset_or_charged_hit": {
+        "provenance": "supercell",
+        "note": "Supercell's October 2025 bug fix removed the instant first attack after a charge reset (affects Evolved Royal Recruits). So the normal attack timing applies after a reset.",
+        "rule": "after a charged hit the next attack follows the normal 26-tick hit speed; after a reset with no charged hit the normal 10-tick first-hit delay applies",
+        "rule_provenance": "design_decision"
+      }
+    }
+  },
+  "effects_reference": {
+    "note": "Slow and stun values belong to the cards that cause them. Listed here only so the charge rules can reference them.",
+    "slow": {
+      "ice_wizard": {
+        "slow_percent": 30,
+        "movement_speed_multiplier_per_mille": 700,
+        "provenance": "supercell, October 2025 (35% to 30%); the same change also covered Fisherman, Giant Snowball and Ice Golem",
+        "needs_recheck": true
+      }
+    },
+    "stun_or_freeze_sources_that_reset_charge": [
+      "zap",
+      "electro_wizard",
+      "electro_spirit",
+      "ice_spirit"
+    ],
+    "pushback_sources_that_reset_charge": ["the_log", "bowler", "fireball"],
+    "durations_and_percentages": "not stored here; take them from each card's own data file"
+  },
+  "unverified": [
+    "Spawn offsets (-7000, -4000, -500, 500, 4000, 7000) are your in-game measurement; no public source lists them.",
+    "Charge distance counted as path length, not straight-line distance.",
+    "Next-card slot showing the evo form before the card is in hand.",
+    "That stopping to make a normal attack always resets charge progress, and that a freeze behaves like a stun.",
+    "Ice Wizard 30% slow is from October 2025; check it against the current version.",
+    "Tile-snapped cursor: spawn offsets are measured from the snapped tile center (this is why the legal cursor x values are -1500, -500, 500, 1500).",
+    "Cursor y range depends on the pocket geometry still missing from arena.json."
+  ]
+}

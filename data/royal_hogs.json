@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "card_id": "royal_hogs",
+  "name": "Royal Hogs",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard.",
+    "web_cross_check_date": "2026-11-01",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "integer_only": true
+    }
+  },
+
+  "base": {
+    "provenance": "public_card_stats",
+
+    "elixir": 5,
+    "rarity": "rare",
+    "type": "troop",
+
+    "count": 4,
+
+    "hitpoints": 837,
+    "damage": 74,
+    "dps": 61,
+
+    "targets": ["building"],
+
+    "movement_speed": "very_fast",
+    "movement_speed_value": 120,
+
+    "range_tiles": 0.7,
+    "range_millitiles": 700,
+
+    "hit_speed_s": 1.2,
+    "hit_speed_ticks": 24,
+
+    "first_hit_s": 0.4,
+    "first_hit_ticks": 8,
+
+    "deploy_time_s": 1.0,
+    "deploy_time_ticks": 20,
+
+    "sight_range_tiles": 9.5,
+    "sight_range_millitiles": 9500,
+
+    "collision_radius_tiles": 0.6,
+    "collision_radius_millitiles": 600,
+
+    "mass": 2,
+
+    "river_jump": true,
+    "air_targetable": false
+  },
+
+  "spawn_pattern": {
+    "provenance": "app",
+
+    "formation": "horizontal",
+
+    "unit_count": 4,
+
+    "supports_split_lane_deployment": true,
+
+    "split_distribution": {
+      "left_lane": 2,
+      "right_lane": 2
+    }
+  },
+
+  "movement": {
+    "provenance": "app",
+
+    "ground_unit": true,
+
+    "can_cross_river": true,
+
+    "river_cross_method": "jump",
+
+    "pathfinding_mode": "building_target_only"
+  },
+
+  "targeting": {
+    "provenance": "public_card_stats",
+
+    "primary_targets": ["building"],
+
+    "ignores_troops_until_engaged": true,
+
+    "retarget_after_building_destroyed": true
+  },
+
+  "combat": {
+    "provenance": "public_card_stats",
+
+    "attack_type": "melee",
+
+    "damage_per_hit": 74,
+
+    "attack_interval_ticks": 24,
+
+    "first_attack_ticks": 8,
+
+    "range_millitiles": 700
+  },
+
+  "evolution": {
+    "enabled": true,
+
+    "cycles_required": 2,
+
+    "flight_mode": true,
+
+    "flight_target": "nearest_building",
+
+    "landing_damage": 43,
+
+    "landing_radius_tiles": 2.0,
+
+    "landing_radius_millitiles": 2000,
+
+    "landing_trigger": ["arrival_at_target", "receives_damage"]
+  },
+
+  "derived": {
+    "total_card_hitpoints": 3348,
+
+    "total_card_damage_per_attack_cycle": 296,
+
+    "total_card_dps": 244
+  },
+
+  "unverified": [
+    "Exact formation spacing between hogs.",
+    "Exact simulator collision behavior while river-jumping.",
+    "Exact evolution landing-damage timing within game engine.",
+    "Exact pathfinding frame when split deployment is used."
+  ]
+}

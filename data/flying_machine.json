@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "card_id": "flying_machine",
+  "name": "Flying Machine",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard.",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "integer_only": true
+    }
+  },
+
+  "base": {
+    "provenance": "public_card_stats",
+
+    "elixir": 4,
+    "rarity": "rare",
+    "type": "troop",
+
+    "count": 1,
+
+    "hitpoints": 565,
+    "damage": 171,
+    "dps": 95,
+
+    "targets": ["ground", "air"],
+
+    "movement_speed": "fast",
+    "movement_speed_value": 90,
+
+    "range_tiles": 6.0,
+    "range_millitiles": 6000,
+
+    "hit_speed_s": 1.8,
+    "hit_speed_ticks": 36,
+
+    "first_hit_s": 0.8,
+    "first_hit_ticks": 16,
+
+    "deploy_time_s": 1.0,
+    "deploy_time_ticks": 20,
+
+    "sight_range_tiles": 7.5,
+    "sight_range_millitiles": 7500,
+
+    "collision_radius_tiles": 0.8,
+    "collision_radius_millitiles": 800,
+
+    "mass": 4,
+
+    "is_flying": true,
+    "air_targetable": true
+  },
+
+  "movement": {
+    "provenance": "app",
+
+    "ground_unit": false,
+
+    "air_unit": true,
+
+    "ignores_river": true,
+
+    "pathfinding_mode": "direct_air"
+  },
+
+  "targeting": {
+    "provenance": "public_card_stats",
+
+    "primary_targets": ["ground", "air"],
+
+    "attack_preference": "nearest_target"
+  },
+
+  "combat": {
+    "provenance": "public_card_stats",
+
+    "attack_type": "ranged",
+
+    "damage_per_hit": 171,
+
+    "attack_interval_ticks": 36,
+
+    "first_attack_ticks": 16,
+
+    "range_millitiles": 6000,
+
+    "projectile_type": "cannonball",
+
+    "projectile_speed": "medium",
+
+    "area_damage": false
+  },
+
+  "projectile": {
+    "provenance": "card_behavior",
+
+    "tracks_target": true,
+
+    "can_target_air": true,
+
+    "can_target_ground": true,
+
+    "area_damage": false,
+
+    "piercing": false,
+
+    "projectile_visual": "cannonball"
+  },
+
+  "special_traits": {
+    "provenance": "card_behavior",
+
+    "longest_range_flying_troop": true,
+
+    "hover_height": "standard_air",
+
+    "immune_to_ground_obstacles": true
+  },
+
+  "evolution": null,
+
+  "derived": {
+    "total_card_hitpoints": 565,
+
+    "total_card_damage_per_attack_cycle": 171,
+
+    "total_card_dps": 95
+  },
+
+  "unverified": [
+    "Exact collision radius in internal game units.",
+    "Exact projectile travel speed.",
+    "Exact first-attack timing after retargeting.",
+    "Simulator should verify projectile retarget behavior if target dies mid-flight."
+  ]
+}

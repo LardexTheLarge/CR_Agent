@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "card_id": "king_tower",
+  "name": "King Tower",
+
+  "meta": {
+    "game_version": "160402020",
+    "card_level": 11,
+    "level_note": "Tournament standard tower.",
+    "units": {
+      "tick_ms": 50,
+      "ticks_per_second": 20,
+      "tile_millitiles": 1000,
+      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "integer_only": true
+    }
+  },
+
+  "base": {
+    "provenance": "public_game_data",
+
+    "type": "tower",
+
+    "count": 1,
+
+    "hitpoints": 4824,
+
+    "damage": 109,
+
+    "dps": 109,
+
+    "targets": ["ground", "air"],
+
+    "range_tiles": 7.5,
+    "range_millitiles": 7500,
+
+    "hit_speed_s": 1.0,
+    "hit_speed_ticks": 20,
+
+    "first_hit_s": 0.4,
+    "first_hit_ticks": 8,
+
+    "sight_range_tiles": 7.5,
+    "sight_range_millitiles": 7500,
+
+    "collision_radius_tiles": 2.0,
+    "collision_radius_millitiles": 2000,
+
+    "air_targetable": false,
+
+    "activated_at_match_start": false
+  },
+
+  "targeting": {
+    "provenance": "game_rules",
+
+    "primary_targets": ["ground", "air"],
+
+    "attack_preference": "nearest_target",
+
+    "retarget_delay_ticks": 0
+  },
+
+  "combat": {
+    "provenance": "public_game_data",
+
+    "attack_type": "ranged",
+
+    "damage_per_hit": 109,
+
+    "attack_interval_ticks": 20,
+
+    "first_attack_ticks": 8,
+
+    "range_millitiles": 7500,
+
+    "projectile_type": "cannonball",
+
+    "projectile_speed": "instant_like"
+  },
+
+  "projectile": {
+    "provenance": "card_behavior",
+
+    "tracks_target": true,
+
+    "can_target_air": true,
+
+    "can_target_ground": true,
+
+    "area_damage": false,
+
+    "piercing": false
+  },
+
+  "activation": {
+    "provenance": "game_rules",
+
+    "starts_inactive": true,
+
+    "activation_triggers": [
+      "enemy_attack",
+      "enemy_spell_damage",
+      "enemy_unit_enters_activation_range",
+      "self_activation_via_pull"
+    ],
+
+    "once_activated_always_active": true,
+
+    "activation_reset_on_match_end": true
+  },
+
+  "multi_cannon_mode": {
+    "provenance": "game_rules",
+
+    "enabled_after_princess_tower_destroyed": true,
+
+    "simultaneous_projectiles": 2,
+
+    "damage_per_projectile": 109,
+
+    "combined_damage_per_attack_cycle": 218,
+
+    "combined_dps": 218
+  },
+
+  "tower_rules": {
+    "provenance": "game_rules",
+
+    "tower_class": "king",
+
+    "is_primary_objective": true,
+
+    "match_loss_when_destroyed": true,
+
+    "can_be_destroyed": true,
+
+    "supports_overtime_victory_conditions": true
+  },
+
+  "placement": {
+    "provenance": "arena_definition",
+
+    "movable": false,
+
+    "spawnable": false,
+
+    "position_source": "arena_layout"
+  },
+
+  "derived": {
+    "inactive_damage_per_second": 0,
+
+    "active_damage_per_second": 109,
+
+    "dual_cannon_damage_per_second": 218,
+
+    "king_tower_hitpoints": 4824
+  },
+
+  "unverified": [
+    "Exact activation radius in internal engine units.",
+    "Exact projectile travel speed used internally.",
+    "Exact frame when dual-cannon mode activates after a Princess Tower is destroyed.",
+    "Exact targeting priority when multiple units enter range simultaneously."
+  ]
+}
