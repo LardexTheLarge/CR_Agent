@@ -45,10 +45,10 @@
     "first_hit_s": 0.4,
     "first_hit_ticks": 8,
     "first_hit_reference_point": "deploy_completion",
-    "collision_radius_millitiles": 500,
-    "collision_radius_provenance": "user_file",
-    "mass": 4,
-    "mass_provenance": "user_file"
+    "collision_radius_millitiles": 650,
+    "collision_radius_provenance": "app (user confirmed 0.65 tiles)",
+    "mass": 2,
+    "mass_provenance": "app (user confirmed mass 2)"
   },
   "attack_ramp": {
     "provenance": "theriagames + royaleapi",
@@ -139,15 +139,8 @@
     "spawn_position": "at Little Prince, then dashes forward",
     "collision_radius_millitiles": 500,
     "collision_radius_provenance": "design_decision",
-    "mass": null,
-    "mass_provenance": "unverified"
+    "mass": 2,
+    "mass_provenance": "app (user confirmed mass 2)"
   },
-  "evolution": null,
-  "unverified": [
-    "Little Prince damage per hit: 104 (your file) versus about 98 (older wiki).(104 is true)",
-    "Stage hit counts (1-2, 3-4, 5+) come from the launch guide.(true)",
-    "Dash direction, knockback distance and exactly when the Guardian becomes targetable.(guardian spawns in front of the little prince and dashes forward no matter what direction the little prince is facing, the dash covers 1.5 tiles, and is targetable after dash is complete)",
-    "Collision radius and mass for both units; sight range.(collision radius for little prince is .65 and for the guardian is .5, mass for both is 2, sight range for both is 5.5)",
-    "Whether the Guardian can target air (sources disagree; most say ground only).(guardian cannot target air)"
-  ]
+  "evolution": null
 }

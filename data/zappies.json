@@ -94,14 +94,15 @@
     "selection_rule": "nearest_in_sight"
   },
   "projectile": {
-    "provenance": "user_file",
+    "provenance": "app (user confirmed the bolt is instant)",
     "type": "electro_bolt",
-    "speed_millitiles_per_tick": null,
-    "speed_status": "NEEDS MEASUREMENT",
+    "instant": true,
+    "travel_ticks": 0,
+    "travel_note": "No projectile flight: the bolt lands on the attack tick, so damage and stun apply immediately with no travel time.",
     "tracks_target": true,
     "area_damage": false,
     "piercing": false,
-    "damage_applied_on": "projectile landing"
+    "damage_applied_on": "attack tick"
   },
   "stun": {
     "provenance": "user_file + older wiki",
@@ -117,16 +118,5 @@
     "stacking_provenance": "design_decision",
     "same_tick_order": "ascending entity id (design_decision)"
   },
-  "evolution": null,
-  "revision_notes": [
-    "Hit speed 2.2 s -> 2.3 s (Sept 8 2026 nerf); load time recomputed to 30 ticks.",
-    "Sight range 7.5 -> 5.5; spawn offsets added; stun stacking rule written down."
-  ],
-  "unverified": [
-    "Hitpoints 530 and damage 116 carried over from your file.(True)",
-    "Triangle orientation and spacing.(zappies are in a triangle formation the first zappie is in the tile infront of the cursor, the other two are behind and diagonally to the left and right of the cursor tile)",
-    "Projectile speed.",
-    "Staggered deploy of 3 ticks per Zappie.(true)",
-    "Stun duration of 0.5 s and the stacking rule.(true)"
-  ]
+  "evolution": null
 }

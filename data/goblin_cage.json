@@ -77,8 +77,8 @@
     "sight_range_provenance": "design_decision (most troops 5.5)",
     "collision_radius_millitiles": 500,
     "collision_radius_provenance": "design_decision",
-    "mass": null,
-    "mass_provenance": "unverified",
+    "mass": 2,
+    "mass_provenance": "app (user confirmed mass 2)",
     "spawn_position": "cage center",
     "spawn_delay_ticks": 0
   },
@@ -130,24 +130,10 @@
         "stays_until": "the troop dies or the cage is destroyed",
         "released_when_cage_destroyed": "becomes targetable again"
       },
-      "max_captured_at_once": null,
-      "max_captured_at_once_status": "unverified: card text says 'enemies' (plural); each capture waits for the cooldown",
-      "which_troops_can_be_captured": "any ground troop in range (champions and heavy troops unverified)"
+      "max_captured_at_once": 1,
+      "max_captured_at_once_status": "app (user confirmed one at a time); each capture waits for the cooldown",
+      "which_troops_can_be_captured": "any ground troop in range"
     },
     "evolved_goblin_brawler": "same stats as goblin_brawler above (unverified: evo HP assumed to follow the base 1121)"
-  },
-  "revision_notes": [
-    "Cage hitpoints 2126 -> 780 (level 11) and lifetime 30 s -> 20 s.",
-    "Brawler: hitpoints 1526 -> 1121, damage 281 -> 337, hit speed 1.5 s -> 1.1 s, first hit 0.4 s -> 0.2 s, range 0.7 -> 0.8 tiles.",
-    "Evolution: removed the invented rage effect and the 'drags the nearest troop' wording; replaced with the real capture mechanic (3 tile range, 0.3 s cooldown, 366 damage per second).",
-    "Evolution cycles 2 kept (confirmed Aug 26 2026)."
-  ],
-  "unverified": [
-    "Cage footprint 3x3 and brawler collision radius.(the cage is 3x3 and the brawler is 1x1)",
-    "Brawler mass and sight range.(mass is 2 and sight range is 5.5)",
-    "Capture range measured from the cage center.(3 tiles from cage footprint so 6 tiles from cage center)",
-    "How many troops can be captured at once.(one at a time)",
-    "Whether champions and very heavy troops can be captured.(all troops are capturable)",
-    "Whether the evolved brawler's HP is 1121 or 1080.(brawler HP is 1121)"
-  ]
+  }
 }
