@@ -1,141 +1,97 @@
 {
-  "schema_version": 1,
+  "schema_version": 4,
   "card_id": "princess_tower",
   "name": "Princess Tower",
-
   "meta": {
     "game_version": "160402020",
     "card_level": 11,
-    "level_note": "Tournament standard tower.",
+    "level_note": "Tower level equals king level; tournament standard is level 11 for towers and cards.",
     "units": {
       "tick_ms": 50,
       "ticks_per_second": 20,
       "tile_millitiles": 1000,
-      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "coordinate_system": "origin at arena center; own side is y < 0 (positions live in arena.json)",
       "integer_only": true
+    },
+    "provenance_legend": {
+      "app": "measured or read by the user in the Clash Royale app",
+      "web": "public wiki, older source",
+      "derived": "computed from other fields",
+      "design_decision": "simulator rule; verify in-game"
     }
   },
-
   "base": {
-    "provenance": "public_game_data",
-
+    "provenance": "app",
     "type": "tower",
-
-    "count": 2,
-
+    "count_per_side": 2,
     "hitpoints": 3052,
-
     "damage": 109,
-
-    "dps": 109,
-
-    "targets": ["ground", "air"],
-
-    "range_tiles": 7.5,
-    "range_millitiles": 7500,
-
-    "hit_speed_s": 1.0,
-    "hit_speed_ticks": 20,
-
-    "first_hit_s": 0.4,
-    "first_hit_ticks": 8,
-
-    "sight_range_tiles": 7.5,
-    "sight_range_millitiles": 7500,
-
-    "collision_radius_tiles": 1.5,
+    "hit_speed_s": 0.8,
+    "hit_speed_ticks": 16,
+    "hit_speed_provenance": "app",
+    "range_millitiles": 7000,
+    "range_note": "7 tiles from the tower center, measured in the app. An older wiki lists 7.5, so the wiki value is likely measured from a different point.",
+    "footprint_millitiles": {
+      "width": 3000,
+      "height": 3000
+    },
     "collision_radius_millitiles": 1500,
-
-    "air_targetable": false,
-
-    "indestructible_until_match_start": true
-  },
-
-  "targeting": {
-    "provenance": "game_rules",
-
-    "primary_targets": ["ground", "air"],
-
-    "attack_preference": "nearest_target",
-
-    "retarget_delay_ticks": 0,
-
-    "supports_tower_assist": true
-  },
-
-  "combat": {
-    "provenance": "public_game_data",
-
+    "collision_shape": "square footprint; radius is half the side length",
     "attack_type": "ranged",
-
-    "damage_per_hit": 109,
-
-    "attack_interval_ticks": 20,
-
-    "first_attack_ticks": 8,
-
-    "range_millitiles": 7500,
-
-    "projectile_type": "arrow",
-
-    "projectile_speed": "instant_like"
+    "first_hit_ticks_after_acquiring_target": 20,
+    "first_hit_provenance": "app",
+    "active_from_match_start": true,
+    "first_hit_s": 1.0,
+    "first_hit_note": "Longer than the 16-tick hit speed: the first shot after acquiring a target takes 1 second, later shots every 16 ticks."
   },
-
+  "targeting": {
+    "provenance": "app",
+    "target_types": ["ground_troop", "air_troop"],
+    "can_target_buildings": false,
+    "selection_rule": "first_target_seen",
+    "selection_detail": "the tower targets the first enemy that enters its range",
+    "range_millitiles": 7000,
+    "range_origin": "tower center",
+    "range_origin_target_end": "target center",
+    "keeps_target_until": "target dies or leaves range, then it retargets",
+    "when_target_lost": "take the enemy that has been in range longest; ties go to the nearest, then the lowest entity id",
+    "same_tick_ties": "nearest, then lowest entity id",
+    "confirmed_by_user": "first target seen in range; keep until dead or out of range, then retarget; ties go to nearest, then lowest entity id"
+  },
   "projectile": {
-    "provenance": "card_behavior",
-
+    "provenance": "app",
+    "type": "arrow",
     "tracks_target": true,
-
-    "can_target_air": true,
-
-    "can_target_ground": true,
-
     "area_damage": false,
-
-    "piercing": false
+    "piercing": false,
+    "flight_ticks_at_max_range": 20,
+    "speed_millitiles_per_tick": 350,
+    "speed_derivation": "7000 millitiles of range / 20 ticks (1 second) = 350; flight time shrinks in proportion to distance",
+    "flight_ticks_formula": "max(1, ceil(distance_millitiles / 350)), distance from tower center to target center",
+    "damage_applied_on": "projectile landing",
+    "if_target_dies_in_flight": "projectile does nothing (simulator rule)",
+    "speed_confirmed_by_user": "the 1 second flight is measured at maximum range and the speed is constant"
   },
-
+  "targetable_by": {
+    "ground_troops": true,
+    "air_troops": true,
+    "spells": true
+  },
   "tower_rules": {
-    "provenance": "game_rules",
-
+    "provenance": "web",
     "tower_class": "princess",
-
-    "activates_at_match_start": true,
-
-    "provides_territory_control": true,
-
-    "can_be_destroyed": true,
-
-    "destroyed_state": {
-      "blocks_targeting": false,
-      "provides_attack_support": false
-    }
-  },
-
-  "placement": {
-    "provenance": "arena_definition",
-
     "movable": false,
-
     "spawnable": false,
-
-    "position_source": "arena_layout"
+    "position_source": "arena.json towers.friendly.left_princess / right_princess (and enemy)",
+    "on_destroyed": [
+      "1 crown to the other side",
+      "own king tower activates",
+      "a 9 x 4 tile pocket opens for the other side in this lane (see arena.json deployment.pocket_zones)"
+    ]
   },
-
   "evolution": null,
-
-  "derived": {
-    "total_towers_per_player": 2,
-
-    "combined_princess_tower_hitpoints": 6104,
-
-    "damage_per_second": 109
-  },
-
   "unverified": [
-    "Exact first-target acquisition timing.",
-    "Exact projectile travel speed used internally.",
-    "Exact collision radius in engine units.",
-    "Exact tower targeting priority when multiple units enter range simultaneously."
+    "If a target dies in flight the projectile does nothing (simulator rule; not asked).",
+    "Nothing else open for this file; all other items were confirmed in the app."
   ]
 }

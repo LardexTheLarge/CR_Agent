@@ -1,136 +1,76 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "card_id": "arrows",
   "name": "Arrows",
-
   "meta": {
     "game_version": "160402020",
     "card_level": 11,
-    "level_note": "Tournament standard. King tower and princess towers are also level 11.",
-    "web_cross_check_date": "2026-11-01",
+    "level_note": "Tournament standard.",
+    "web_cross_check_date": "2026-11-04",
     "units": {
       "tick_ms": 50,
       "ticks_per_second": 20,
       "tile_millitiles": 1000,
-      "coordinate_system": "origin at arena center; x runs left-right, y runs along the lane; own side is y < 0",
+      "coordinate_system": "origin at arena center; own side is y < 0 (see arena.json)",
       "integer_only": true
     },
     "provenance_legend": {
-      "app": "read by the user from the Clash Royale app",
+      "app": "read or measured by the user in the app",
       "supercell": "official Supercell balance notes",
       "liquipedia": "Liquipedia Clash Royale wiki",
-      "derived": "computed from other fields in this file",
-      "design_decision": "rule chosen for the simulator because no public source states it; verify in-game"
+      "fandom": "Clash Royale fandom wiki",
+      "web": "other public source named in the field",
+      "user_file": "carried over from your earlier file; not independently confirmed",
+      "derived": "computed from other fields",
+      "design_decision": "simulator rule; verify in-game"
     }
   },
-
-  "unit_tables": {
-    "timing_formulas": [
-      "impact_tick = deploy_tick + travel_ticks",
-      "total_damage = damage_per_wave * wave_count"
-    ]
-  },
-
   "base": {
-    "provenance": "liquipedia",
+    "provenance": "user_file + supercell",
     "elixir": 3,
-    "type": "spell",
     "rarity": "common",
-
-    "targets": ["ground_troop", "air_troop", "building", "tower"],
-
-    "radius_tiles": 3.5,
+    "type": "spell",
+    "target_types": ["ground_troop", "air_troop", "building", "tower"],
     "radius_millitiles": 3500,
-
+    "radius_provenance": "supercell (4 -> 3.5 tiles, Mar 2025)",
     "wave_count": 3,
-
     "damage_per_wave": 122,
     "total_damage": 366,
-
-    "crown_tower_damage_per_wave": 31,
-    "total_crown_tower_damage": 93,
-
-    "projectile_type": "arrow_volley",
-
-    "deploy_time_s": 1.0,
-    "deploy_time_ticks": 20,
-
-    "travel_time_s": 1.0,
-    "travel_time_ticks": 20,
-
-    "impact_tick_formula": "deploy_time_ticks + travel_time_ticks",
-
+    "damage_note": "3 x 122 = 366 at level 11 (from your file).",
+    "crown_tower_total_damage": 75,
+    "crown_tower_damage_per_wave": 25,
+    "crown_tower_provenance": "supercell, June 2026: 93 -> 75",
+    "crown_tower_multiplier_per_mille": 205,
     "knockback": false,
     "stun": false,
     "slow": false
   },
-
-  "spell_pattern": {
-    "provenance": "app",
-
-    "shape": "circle",
-
-    "radius_millitiles": 3500,
-
-    "wave_count": 3,
-
-    "wave_spacing_ticks": 1,
-
-    "all_waves_same_area": true,
-
-    "friendly_fire": false
-  },
-
-  "projectile": {
+  "timing": {
     "provenance": "design_decision",
-
-    "spawn_type": "off_map",
-
-    "impact_mode": "area_damage",
-
-    "tracks_target": false,
-
-    "can_miss": false,
-
-    "affected_area_shape": "circle",
-
-    "affected_area_radius_millitiles": 3500
+    "impact_delay_ticks": 20,
+    "impact_delay_note": "Replaces your deploy 20 + travel 20 = 40 ticks, which counted the same delay twice. 20 ticks (1 s) from cast to first wave is a guess.",
+    "wave_spacing_ticks": 1,
+    "wave_spacing_provenance": "user_file",
+    "waves_resolve": "each wave hits whoever is inside the circle at that tick",
+    "tick_of_wave_n": "cast_tick + impact_delay_ticks + (n - 1) * wave_spacing_ticks"
   },
-
-  "damage_model": {
-    "provenance": "liquipedia",
-
-    "damage_application": "three_waves",
-
-    "wave_damage": 122,
-
-    "wave_count": 3,
-
-    "total_damage": 366,
-
-    "crown_tower_damage_multiplier_per_mille": 254,
-
-    "crown_tower_damage_note": "31 damage per wave at tournament standard"
-  },
-
   "placement": {
     "provenance": "derived",
-
     "targeting_mode": "free_cast",
-
-    "legal_target_area": "any spell-legal arena coordinate",
-
-    "requires_enemy_target": false,
-
-    "cursor_clamped_to_arena": true
+    "legal_area": "any arena coordinate, including the enemy half and the river",
+    "cursor_snaps_to": "tile centers (design_decision; spells may be freer in game)",
+    "friendly_fire": false
   },
-
+  "projectile": {
+    "spawn_type": "off_map",
+    "tracks_target": false,
+    "can_miss": false,
+    "area_shape": "circle"
+  },
   "evolution": null,
-
   "unverified": [
-    "Travel time may vary slightly based on engine implementation.",
-    "Wave spacing measured as simulator assumption; verify in-game.",
-    "Exact internal crown-tower damage multiplier should be confirmed from game files.",
-    "Whether all three waves resolve on consecutive ticks or same tick."
+    "Impact delay of 20 ticks and wave spacing of 1 tick.(true)",
+    "Damage 122 per wave at level 11 is from your file; I could not cross-check it against a current source.(true)",
+    "Whether spell placement snaps to tile centers.(True)"
   ]
 }

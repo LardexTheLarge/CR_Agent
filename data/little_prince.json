@@ -1,185 +1,153 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "card_id": "little_prince",
   "name": "Little Prince",
-
   "meta": {
     "game_version": "160402020",
     "card_level": 11,
     "level_note": "Tournament standard.",
+    "web_cross_check_date": "2026-11-04",
     "units": {
       "tick_ms": 50,
       "ticks_per_second": 20,
       "tile_millitiles": 1000,
-      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "coordinate_system": "origin at arena center; own side is y < 0 (see arena.json)",
       "integer_only": true
+    },
+    "provenance_legend": {
+      "app": "read or measured by the user in the app",
+      "supercell": "official Supercell balance notes",
+      "liquipedia": "Liquipedia Clash Royale wiki",
+      "fandom": "Clash Royale fandom wiki",
+      "web": "other public source named in the field",
+      "user_file": "carried over from your earlier file; not independently confirmed",
+      "derived": "computed from other fields",
+      "design_decision": "simulator rule; verify in-game"
     }
   },
-
   "base": {
-    "provenance": "public_card_stats",
-
+    "provenance": "mixed (see fields)",
     "elixir": 3,
     "rarity": "champion",
     "type": "troop",
-
-    "count": 1,
-
+    "unit_count": 1,
     "hitpoints": 698,
     "damage": 104,
-
-    "targets": ["ground", "air"],
-
-    "movement_speed": "medium",
-    "movement_speed_value": 60,
-
-    "range_tiles": 5.5,
+    "damage_provenance": "user_file. A 2023 wiki DPS table (82/123/247) implies about 98 per hit, so this may differ.",
+    "target_types": ["ground_troop", "air_troop", "building", "tower"],
+    "movement_speed_tier": "medium",
+    "speed_millitiles_per_tick": 50,
     "range_millitiles": 5500,
-
+    "sight_range_millitiles": 5500,
+    "sight_range_provenance": "design_decision",
     "deploy_time_s": 1.0,
     "deploy_time_ticks": 20,
-
     "first_hit_s": 0.4,
     "first_hit_ticks": 8,
-
-    "collision_radius_tiles": 0.5,
+    "first_hit_reference_point": "deploy_completion",
     "collision_radius_millitiles": 500,
-
-    "mass": 4
+    "collision_radius_provenance": "user_file",
+    "mass": 4,
+    "mass_provenance": "user_file"
   },
-
-  "targeting": {
-    "provenance": "public_card_stats",
-
-    "primary_targets": ["ground", "air"],
-
-    "attack_preference": "nearest_target"
-  },
-
-  "combat": {
-    "provenance": "card_behavior",
-
-    "attack_type": "ranged",
-
-    "damage_per_hit": 104,
-
-    "projectile_type": "crossbow_bolt",
-
-    "projectile_speed": 800,
-
-    "range_millitiles": 5500,
-
-    "ramp_up_attack_speed": true,
-
-    "attack_stages": [
+  "attack_ramp": {
+    "provenance": "theriagames + royaleapi",
+    "stages": [
       {
         "stage": 1,
+        "hits": "1-2",
         "hit_speed_s": 1.2,
         "hit_speed_ticks": 24
       },
       {
         "stage": 2,
-        "hit_speed_s": 0.6,
-        "hit_speed_ticks": 12
+        "hits": "3-4",
+        "hit_speed_s": 0.8,
+        "hit_speed_ticks": 16
       },
       {
         "stage": 3,
+        "hits": "5+",
         "hit_speed_s": 0.4,
         "hit_speed_ticks": 8
       }
     ],
-
-    "reset_on_movement": true
+    "stage_hit_counts_provenance": "royaleapi launch guide; assumed unchanged",
+    "stage_2_note": "Your file said 0.6 s. Two sources list 0.8 s.",
+    "hit_speed_conservation_s": 0.3,
+    "hit_speed_conservation_ticks": 6,
+    "hit_speed_conservation_provenance": "supercell, Aug 26 2026 (0 -> 0.3 s)",
+    "ramp_rules": {
+      "moving_longer_than_conservation_window": "reset to stage 1",
+      "moving_up_to_conservation_window": "keep the current stage",
+      "stun_or_knockback": "reset to stage 1",
+      "rules_provenance": "supercell for the 0.3 s window; reset-on-stun from wiki; the rest is a design_decision"
+    }
   },
-
+  "projectile": {
+    "provenance": "theriagames",
+    "type": "crossbow_bolt",
+    "projectile_speed_units": 800,
+    "speed_millitiles_per_tick": 667,
+    "speed_derivation": "800 units -> 667 millitiles per tick (same assumption as Flying Machine)",
+    "flight_ticks_formula": "max(1, ceil(distance_millitiles / 667))",
+    "tracks_target": true,
+    "area_damage": false,
+    "piercing": false,
+    "damage_applied_on": "projectile landing"
+  },
   "champion_ability": {
-    "enabled": true,
-
+    "provenance": "supercell + theriagames",
     "name": "Royal Rescue",
-
     "elixir_cost": 3,
-
-    "cooldown_s": 30.0,
-
-    "cooldown_ticks": 600,
-
+    "uses_per_match": 1,
+    "uses_note": "All abilities except Boss Bandit became single-use in the Aug 4 2026 patch. Your file's 30 s cooldown no longer applies.",
     "cast_time_s": 0.944,
-
     "cast_time_ticks": 19,
-
-    "summons_unit": true
+    "requires": "Little Prince on the field",
+    "action_space_note": "Needs its own action in the RL environment: 'use ability' while Little Prince is alive and elixir >= 3.",
+    "summons": "guardian",
+    "dash": {
+      "range_millitiles": 4000,
+      "targets": "ground",
+      "knockback_millitiles": 2000,
+      "charge_damage": 320,
+      "charge_damage_provenance": "supercell (256 -> 320, Aug 26 2026)",
+      "direction": "forward toward the enemy",
+      "direction_provenance": "design_decision"
+    }
   },
-
-  "ability_effect": {
-    "provenance": "public_card_stats",
-
-    "charge_damage": 320,
-
-    "knockback_enabled": true,
-
-    "charge_radius_tiles": 2.5,
-
-    "charge_radius_millitiles": 2500
-  },
-
   "guardian": {
-    "provenance": "public_card_stats",
-
-    "card_id": "guardian",
-
-    "count": 1,
-
+    "provenance": "supercell + theriagames",
     "hitpoints": 1600,
-
     "damage": 232,
-
+    "damage_provenance": "supercell (217 -> 232, Aug 26 2026)",
     "charge_damage": 320,
-
-    "targets": ["ground"],
-
-    "movement_speed": "medium",
-    "movement_speed_value": 60,
-
-    "range_tiles": 1.2,
-    "range_millitiles": 1200,
-
+    "target_types": ["ground_troop", "building", "tower"],
+    "attacks_air": false,
     "hit_speed_s": 1.2,
     "hit_speed_ticks": 24,
-
-    "first_hit_s": 0.4,
-    "first_hit_ticks": 8
+    "first_hit_s": 0.5,
+    "first_hit_ticks": 10,
+    "first_hit_note": "Your file said 0.4 s; June 2024 patch set it to 0.5 s.",
+    "movement_speed_tier": "medium",
+    "speed_millitiles_per_tick": 50,
+    "range_tier": "melee_medium",
+    "range_millitiles": 1200,
+    "deploy_time_s": 0.3,
+    "deploy_time_ticks": 6,
+    "spawn_position": "at Little Prince, then dashes forward",
+    "collision_radius_millitiles": 500,
+    "collision_radius_provenance": "design_decision",
+    "mass": null,
+    "mass_provenance": "unverified"
   },
-
-  "projectile": {
-    "provenance": "card_behavior",
-
-    "tracks_target": true,
-
-    "can_target_air": true,
-
-    "can_target_ground": true,
-
-    "area_damage": false,
-
-    "piercing": false
-  },
-
   "evolution": null,
-
-  "derived": {
-    "little_prince_hitpoints": 698,
-
-    "guardian_hitpoints": 1600,
-
-    "combined_hitpoints_after_ability": 2298,
-
-    "ability_total_elixir_cost": 6
-  },
-
   "unverified": [
-    "Exact stage transition timing between attack-speed ramps.",
-    "Exact engine tick when ramp-up resets after movement.",
-    "Exact Guardian spawn coordinates relative to Little Prince.",
-    "Exact knockback distance variation for Royal Rescue."
+    "Little Prince damage per hit: 104 (your file) versus about 98 (older wiki).(104 is true)",
+    "Stage hit counts (1-2, 3-4, 5+) come from the launch guide.(true)",
+    "Dash direction, knockback distance and exactly when the Guardian becomes targetable.(guardian spawns in front of the little prince and dashes forward no matter what direction the little prince is facing, the dash covers 1.5 tiles, and is targetable after dash is complete)",
+    "Collision radius and mass for both units; sight range.(collision radius for little prince is .65 and for the guardian is .5, mass for both is 2, sight range for both is 5.5)",
+    "Whether the Guardian can target air (sources disagree; most say ground only).(guardian cannot target air)"
   ]
 }

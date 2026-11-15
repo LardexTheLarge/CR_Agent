@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "card_id": "royal_recruits",
   "name": "Royal Recruits",
   "meta": {
@@ -123,10 +123,11 @@
     "formation_width_check": "14000 between outer centers + 2 x 500 radius = 15000",
     "cursor_position": "midpoint between the two center recruits (x = 0 in formation space)",
     "rigid_formation": true,
-    "rigid_formation_note": "Never compressed or slid inward. The cursor is clamped instead (see placement)."
+    "rigid_formation_note": "Never compressed or slid inward. The cursor is clamped instead (see placement).",
+    "offsets_confirmed_by_user": true
   },
   "placement": {
-    "provenance": "derived",
+    "provenance": "app",
     "cursor_snaps_to": "tile centers",
     "legal_cursor_x_millitiles": [-1500, -500, 500, 1500],
     "cursor_x_window_millitiles": {
@@ -137,10 +138,13 @@
     "cursor_x_derivation": "the outer recruit sits 7000 from the cursor and its 500 radius must stay inside the 9000 boundary, so |cursor_x| <= 1500 (cursor is a tile center)",
     "outer_recruit_center_max_abs_x_millitiles": 8500,
     "outer_recruit_edge_at_limit": "8500 + 500 = 9000, exactly on the boundary, so nothing overhangs",
-    "cursor_y": "tile centers inside arena.json deployment.friendly_base_zone, excluding river, bridges and own tower footprints",
+    "cursor_y": "tile centers inside the legal zone. The own-side base zone always counts; an enemy pocket counts only when BOTH enemy pockets are open (confirmed), because the 15000 formation does not fit in one 9000 pocket.",
     "own_side": "y < 0",
     "pocket_rule": "may only be deployed in an enemy pocket after BOTH enemy princess towers are destroyed (see arena.json deployment.pocket_zones)",
-    "edge_rule": "No separate edge rule. Restricting the cursor to 4 columns is the edge rule; the formation is never compressed or slid."
+    "edge_rule": "No separate edge rule. Restricting the cursor to 4 columns is the edge rule; the formation is never compressed or slid.",
+    "spawn_offsets_measured_from": "the snapped tile center (confirmed)",
+    "validity_rule": "all six spawn positions must lie inside the legal zone",
+    "validity_rule_provenance": "app (cursor range depends on both pockets being open)"
   },
   "shield": {
     "provenance": "app",
@@ -180,8 +184,8 @@
       "player_choice_note": "While EVO_READY every play is the evo version, so the RL action space needs no extra evo action.",
       "elixir_cost_same_as_normal": true,
       "ready_flag_changes_when": "at the end of the normal play. The card cannot be played again until it re-enters the hand, so this matches 'evo-ready after re-entering the hand'.",
-      "observation_recommendation": "expose evo_ready for each of the 4 hand slots and the next card",
-      "next_card_slot_display": "unverified: check in-app whether the next-card preview already shows the evo form"
+      "observation_recommendation": "expose evo_ready for each of the 4 hand slots and the next card (the game shows it there)",
+      "next_card_slot_display": "confirmed: the next-card slot shows the evo form before the card is in hand"
     },
     "charge": {
       "provenance": "supercell",
@@ -190,7 +194,7 @@
       "requires_shield_broken": true,
       "distance_millitiles": 2500,
       "distance_metric": "path length actually moved, summed per tick",
-      "distance_metric_provenance": "design_decision",
+      "distance_metric_provenance": "app",
       "progress_starts_at": "the tick the shield breaks",
       "speed_millitiles_per_tick": 100,
       "speed_tier": "very_fast",
@@ -213,13 +217,15 @@
       "progress_not_reset_by": ["body_blocking", "slow"],
       "slowed_movement_counts": "only the distance actually moved is added to progress",
       "after_reset": "the recruit must move 2500 millitiles to charge again",
-      "reset_list_provenance": "design_decision, built from the user's in-game rules",
+      "reset_list_provenance": "app",
       "attack_timing_after_reset_or_charged_hit": {
         "provenance": "supercell",
         "note": "Supercell's October 2025 bug fix removed the instant first attack after a charge reset (affects Evolved Royal Recruits). So the normal attack timing applies after a reset.",
         "rule": "after a charged hit the next attack follows the normal 26-tick hit speed; after a reset with no charged hit the normal 10-tick first-hit delay applies",
         "rule_provenance": "design_decision"
-      }
+      },
+      "stopping_to_attack_resets_progress": "confirmed",
+      "freeze_behaves_like_stun": "confirmed"
     }
   },
   "effects_reference": {
@@ -229,7 +235,8 @@
         "slow_percent": 30,
         "movement_speed_multiplier_per_mille": 700,
         "provenance": "supercell, October 2025 (35% to 30%); the same change also covered Fisherman, Giant Snowball and Ice Golem",
-        "needs_recheck": true
+        "needs_recheck": false,
+        "confirmed_by_user": true
       }
     },
     "stun_or_freeze_sources_that_reset_charge": [
@@ -242,12 +249,6 @@
     "durations_and_percentages": "not stored here; take them from each card's own data file"
   },
   "unverified": [
-    "Spawn offsets (-7000, -4000, -500, 500, 4000, 7000) are your in-game measurement; no public source lists them.",
-    "Charge distance counted as path length, not straight-line distance.",
-    "Next-card slot showing the evo form before the card is in hand.",
-    "That stopping to make a normal attack always resets charge progress, and that a freeze behaves like a stun.",
-    "Ice Wizard 30% slow is from October 2025; check it against the current version.",
-    "Tile-snapped cursor: spawn offsets are measured from the snapped tile center (this is why the legal cursor x values are -1500, -500, 500, 1500).",
-    "Cursor y range depends on the pocket geometry still missing from arena.json."
+    "Slow tier rounding (0.75 tiles/s = 37.5 millitiles/tick, stored as 37). Not used by this card; settle before adding a slow card."
   ]
 }

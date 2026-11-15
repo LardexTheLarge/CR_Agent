@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "arena_id": "standard_ladder_arena",
   "name": "Standard Arena",
   "description": "Combined arena geometry: bounds, river, bridges, towers, deployment zones, movement rules and match rules. Replaces the separate arena.json, river.json and bridge.json.",
@@ -84,7 +84,8 @@
     "spell_can_target": true,
     "attackable": false,
     "blocks_projectiles": false,
-    "blocks_line_of_sight": false
+    "blocks_line_of_sight": false,
+    "deploy_confirmed_by_user": "bridge tiles overlap the river rows, so nothing can be deployed on them"
   },
   "lanes": {
     "left": {
@@ -110,7 +111,7 @@
         "height": 4000
       }
     },
-    "footprint_provenance": "web",
+    "footprint_provenance": "app",
     "friendly": {
       "king": {
         "x_millitiles": 0,
@@ -120,12 +121,12 @@
       "left_princess": {
         "x_millitiles": -4500,
         "y_millitiles": -9500,
-        "y_provenance": "design_decision, grid-aligned best guess"
+        "y_provenance": "best estimate, grid-aligned; see princess_y_check"
       },
       "right_princess": {
         "x_millitiles": 4500,
         "y_millitiles": -9500,
-        "y_provenance": "design_decision, grid-aligned best guess"
+        "y_provenance": "best estimate, grid-aligned; see princess_y_check"
       }
     },
     "enemy": {
@@ -142,7 +143,6 @@
         "y_millitiles": 9500
       }
     },
-    "princess_y_formula": "center_y = -(1000 + N*1000 + 1500), where N is the number of tiles between the river edge and the front of the princess tower. N = 7 gives -9500. Count N in the app and correct this value if it differs.",
     "king_activation": {
       "provenance": "web",
       "initial_state": "inactive",
@@ -151,14 +151,27 @@
         "either_own_princess_tower_destroyed"
       ],
       "persists_until_match_end": true,
-      "wake_up_delay_ticks": null,
-      "wake_up_delay_status": "unverified: the king takes a few seconds to bring out the cannon"
+      "wake_up_delay_ticks": 80,
+      "wake_up_delay_status": "app: 3.3 s aim (66 ticks) + 0.7 s before firing (14 ticks); see king_tower.json activation.first_shot"
+    },
+    "princess_y_formula": "center_y = -(1000 + N*1000 + 1500), where N is the number of tiles between the river edge and the front of the princess tower. N = 7 gives -9500. Count N in the app and correct this value if it differs. Tower range is 7000 from the tower center.",
+    "princess_y_check": {
+      "current_value_millitiles": -9500,
+      "user_note": "the princess tower center is 2 tiles from the arena y edge",
+      "status": "not applied: taken literally the center would be -14000 (off the tile grid) or, measured to the footprint edge, -12500, which with a 7000 range would reach only y = -5500 and never cover the bridge",
+      "expected": "7 tiles between the river edge and the front of the princess tower",
+      "if_app_shows": {
+        "6 tiles": -8500,
+        "7 tiles": -9500,
+        "8 tiles": -10500
+      },
+      "impact": "changes tower reach by 1000 per tile; acceptable for training"
     }
   },
   "deployment": {
     "tile_snapped": true,
     "snap_note": "Placement snaps to tile centers. A troop spawns at the tile center plus its spawn offsets.",
-    "snap_provenance": "design_decision",
+    "snap_provenance": "app",
     "friendly_base_zone": {
       "x_min_millitiles": -9000,
       "x_max_millitiles": 9000,
@@ -181,10 +194,54 @@
       "persists_until_match_end": true,
       "left_pocket_opens_when": "enemy_left_princess_destroyed",
       "right_pocket_opens_when": "enemy_right_princess_destroyed",
-      "geometry_millitiles": null,
-      "geometry_status": "NEEDS MEASUREMENT: x range and how many tiles deep past the river. Count them in the app after a princess tower falls.",
+      "geometry_millitiles": {
+        "opens_for_friendly": {
+          "left": {
+            "opens_when": "enemy_left_princess_destroyed",
+            "x_min": -9000,
+            "x_max": 0,
+            "y_min": 1000,
+            "y_max": 5000
+          },
+          "right": {
+            "opens_when": "enemy_right_princess_destroyed",
+            "x_min": 0,
+            "x_max": 9000,
+            "y_min": 1000,
+            "y_max": 5000
+          }
+        },
+        "opens_for_enemy": {
+          "left": {
+            "opens_when": "friendly_left_princess_destroyed",
+            "x_min": -9000,
+            "x_max": 0,
+            "y_min": -5000,
+            "y_max": -1000
+          },
+          "right": {
+            "opens_when": "friendly_right_princess_destroyed",
+            "x_min": 0,
+            "x_max": 9000,
+            "y_min": -5000,
+            "y_max": -1000
+          }
+        }
+      },
       "wide_formation_rule": "Royal Recruits need both princess towers destroyed before they can be deployed in a pocket, because the 15000 formation is wider than one lane half (9000). Derived from the width and consistent with community wiki.",
-      "wide_formation_rule_provenance": "derived"
+      "wide_formation_rule_provenance": "derived",
+      "provenance": "app",
+      "size_tiles": {
+        "width": 9,
+        "depth": 4
+      },
+      "geometry_note": "Confirmed in the app: 9 tiles wide, 4 deep, depth starts at the river edge.",
+      "lane_rule": "a pocket belongs to the lane of the destroyed tower (same x sign)",
+      "legal_tile_centers": {
+        "depth_rows_for_friendly": [1500, 2500, 3500, 4500],
+        "columns_per_pocket": 9
+      },
+      "pocket_ignores_enemy_tower_footprints": "enemy princess footprint starts at y = 8000, so it never overlaps a 4-deep pocket"
     }
   },
   "movement": {
@@ -192,7 +249,8 @@
       "must_use_bridges": true,
       "diagonal_allowed": true,
       "repath_when_obstacle_appears": true,
-      "provenance": "web"
+      "provenance": "web",
+      "pathing_note": "Use grid-based pathing with diagonal moves and bridge funnels. The exact internal navigation mesh is unknown and is not needed for training."
     },
     "air": {
       "ignore_river": true,
@@ -245,12 +303,7 @@
     }
   },
   "unverified": [
-    "Princess tower center y (-9500 is a grid-aligned guess; the old -10000 was not on the tile grid).",
-    "Pocket zone geometry.",
-    "Tile-snapped placement and spawn offsets measured from the snapped tile center.",
-    "King tower wake-up delay in ticks.",
-    "Navigation mesh and exact bridge centering while crossing.",
-    "That the bridge tiles cannot be deployed on (assumed because they overlap the river rows).",
-    "Tower footprints come from a community wiki; confirm 4x4 and 3x3 in the app."
+    "Princess tower center y (-9500 is the best estimate; see towers.princess_y_check).",
+    "Exact internal navigation mesh and bridge centering (simulator uses grid pathing)."
   ]
 }

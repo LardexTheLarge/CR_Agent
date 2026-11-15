@@ -1,145 +1,130 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "card_id": "royal_hogs",
   "name": "Royal Hogs",
-
   "meta": {
     "game_version": "160402020",
     "card_level": 11,
     "level_note": "Tournament standard.",
-    "web_cross_check_date": "2026-11-01",
+    "web_cross_check_date": "2026-11-04",
     "units": {
       "tick_ms": 50,
       "ticks_per_second": 20,
       "tile_millitiles": 1000,
-      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "coordinate_system": "origin at arena center; own side is y < 0 (see arena.json)",
       "integer_only": true
+    },
+    "provenance_legend": {
+      "app": "read or measured by the user in the app",
+      "supercell": "official Supercell balance notes",
+      "liquipedia": "Liquipedia Clash Royale wiki",
+      "fandom": "Clash Royale fandom wiki",
+      "web": "other public source named in the field",
+      "user_file": "carried over from your earlier file; not independently confirmed",
+      "derived": "computed from other fields",
+      "design_decision": "simulator rule; verify in-game"
     }
   },
-
   "base": {
-    "provenance": "public_card_stats",
-
+    "provenance": "user_file",
     "elixir": 5,
     "rarity": "rare",
     "type": "troop",
-
-    "count": 4,
-
+    "unit_count": 4,
+    "per_unit_stats": true,
     "hitpoints": 837,
     "damage": 74,
-    "dps": 61,
-
-    "targets": ["building"],
-
-    "movement_speed": "very_fast",
-    "movement_speed_value": 120,
-
-    "range_tiles": 0.7,
-    "range_millitiles": 700,
-
+    "target_types": ["building", "tower"],
+    "attacks_air": false,
+    "air_targetable": false,
+    "targets_note": "Buildings only. Crown towers count as buildings.",
     "hit_speed_s": 1.2,
     "hit_speed_ticks": 24,
-
     "first_hit_s": 0.4,
     "first_hit_ticks": 8,
-
+    "first_hit_reference_point": "deploy_completion",
+    "load_time_ticks": 16,
     "deploy_time_s": 1.0,
     "deploy_time_ticks": 20,
-
-    "sight_range_tiles": 9.5,
+    "movement_speed_tier": "very_fast",
+    "speed_millitiles_per_tick": 100,
+    "range_tier": "melee_short",
+    "range_millitiles": 800,
+    "range_note": "Your file said 0.7. Melee short is 0.8 in this project's range table.",
     "sight_range_millitiles": 9500,
-
-    "collision_radius_tiles": 0.6,
+    "sight_range_provenance": "user_file",
     "collision_radius_millitiles": 600,
-
     "mass": 2,
-
-    "river_jump": true,
-    "air_targetable": false
+    "splash_radius_millitiles": 0,
+    "death_spawn": null,
+    "lifetime_ticks": 0
   },
-
-  "spawn_pattern": {
-    "provenance": "app",
-
-    "formation": "horizontal",
-
-    "unit_count": 4,
-
-    "supports_split_lane_deployment": true,
-
-    "split_distribution": {
-      "left_lane": 2,
-      "right_lane": 2
-    }
+  "spawn": {
+    "provenance": "design_decision",
+    "pattern": "horizontal_line",
+    "offsets_millitiles": [
+      {
+        "x": -1800,
+        "y": 0
+      },
+      {
+        "x": -600,
+        "y": 0
+      },
+      {
+        "x": 600,
+        "y": 0
+      },
+      {
+        "x": 1800,
+        "y": 0
+      }
+    ],
+    "formation_width_millitiles": 4800,
+    "formation_width_check": "3600 between outer centers + 2 x 600 radius = 4800",
+    "spacing_note": "Hogs placed touching (1200 center to center). Real spacing is not published.",
+    "cursor_snaps_to": "tile centers",
+    "cursor_x_limits_millitiles": {
+      "min": -6500,
+      "max": 6500,
+      "derivation": "outer body edge = cursor + 1800 + 600 must stay within 9000, so |cursor| <= 6600; the largest tile center is 6500"
+    },
+    "splits_across_lanes_when_cursor_near_center": true
   },
-
   "movement": {
-    "provenance": "app",
-
+    "provenance": "arena.json",
     "ground_unit": true,
-
     "can_cross_river": true,
-
     "river_cross_method": "jump",
-
+    "jump_requires_bridge": false,
+    "jump_note": "Targeting and attackability while jumping are not published. Assumed targetable.",
     "pathfinding_mode": "building_target_only"
   },
-
   "targeting": {
-    "provenance": "public_card_stats",
-
-    "primary_targets": ["building"],
-
-    "ignores_troops_until_engaged": true,
-
+    "provenance": "user_file",
+    "primary_targets": ["building", "tower"],
+    "ignores_troops": true,
+    "ignores_troops_note": "Never attacks troops, even if blocked.",
+    "selection_rule": "nearest_building_in_sight",
     "retarget_after_building_destroyed": true
   },
-
-  "combat": {
-    "provenance": "public_card_stats",
-
-    "attack_type": "melee",
-
-    "damage_per_hit": 74,
-
-    "attack_interval_ticks": 24,
-
-    "first_attack_ticks": 8,
-
-    "range_millitiles": 700
-  },
-
   "evolution": {
-    "enabled": true,
-
+    "in_deck": false,
+    "note": "Royal Hogs Evolution exists (landing damage halved to 43 in May 2026) but your deck plays base Royal Hogs, so it is not simulated.",
     "cycles_required": 2,
-
-    "flight_mode": true,
-
-    "flight_target": "nearest_building",
-
     "landing_damage": 43,
-
-    "landing_radius_tiles": 2.0,
-
     "landing_radius_millitiles": 2000,
-
-    "landing_trigger": ["arrival_at_target", "receives_damage"]
+    "details_provenance": "user_file; not verified"
   },
-
-  "derived": {
-    "total_card_hitpoints": 3348,
-
-    "total_card_damage_per_attack_cycle": 296,
-
-    "total_card_dps": 244
-  },
-
+  "revision_notes": [
+    "Range 0.7 -> 0.8 tiles (melee short).",
+    "Added explicit spawn offsets (design decision, spacing unknown).",
+    "Evolution block kept but marked not in deck."
+  ],
   "unverified": [
-    "Exact formation spacing between hogs.",
-    "Exact simulator collision behavior while river-jumping.",
-    "Exact evolution landing-damage timing within game engine.",
-    "Exact pathfinding frame when split deployment is used."
+    "Hitpoints 837, damage 74, first hit 0.4 s, sight range 9.5 are carried over from your file.(true)",
+    "Spawn offsets and formation spacing.(5 tiles wide and +-2.5 tiles from center cursor, cursor tile doesn't have a pig but the 2 tiles on both sides have a pig)",
+    "Whether hogs can be hit while jumping the river.(hogs can't be hit while jumping the river)",
+    "Whether the hogs target the nearest building or a different priority.(nearest building)"
   ]
 }

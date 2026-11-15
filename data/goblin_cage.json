@@ -1,162 +1,153 @@
 {
-  "schema_version": 1,
-  "card_id": "goblin_cage_evolution",
+  "schema_version": 2,
+  "card_id": "goblin_cage",
   "name": "Goblin Cage",
   "evolution_name": "Goblin Cage Evolution",
-
   "meta": {
     "game_version": "160402020",
     "card_level": 11,
     "level_note": "Tournament standard.",
+    "web_cross_check_date": "2026-11-04",
     "units": {
       "tick_ms": 50,
       "ticks_per_second": 20,
       "tile_millitiles": 1000,
-      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "coordinate_system": "origin at arena center; own side is y < 0 (see arena.json)",
       "integer_only": true
+    },
+    "provenance_legend": {
+      "app": "read or measured by the user in the app",
+      "supercell": "official Supercell balance notes",
+      "liquipedia": "Liquipedia Clash Royale wiki",
+      "fandom": "Clash Royale fandom wiki",
+      "web": "other public source named in the field",
+      "user_file": "carried over from your earlier file; not independently confirmed",
+      "derived": "computed from other fields",
+      "design_decision": "simulator rule; verify in-game"
     }
   },
-
   "base": {
-    "provenance": "public_card_stats",
-
+    "provenance": "liquipedia",
     "elixir": 4,
     "rarity": "rare",
     "type": "building",
-
-    "lifetime_s": 30,
-    "lifetime_ticks": 600,
-
-    "hitpoints": 2126,
-
-    "targets": [],
-
+    "hitpoints": 780,
+    "lifetime_s": 20.0,
+    "lifetime_ticks": 400,
+    "hitpoints_lost_per_second": 39,
+    "hitpoints_lost_per_20_ticks": 39,
+    "decay_note": "780 / 20 s = 39 per second. Apply 39 hitpoints per 20 ticks, or 195 per 100 ticks, to stay integer.",
     "deploy_time_s": 1.0,
     "deploy_time_ticks": 20,
-
-    "sight_range_tiles": 7.5,
-    "sight_range_millitiles": 7500,
-
-    "collision_radius_tiles": 1.5,
-    "collision_radius_millitiles": 1500
-  },
-
-  "building": {
-    "provenance": "card_behavior",
-
-    "building_type": "spawner",
-
+    "footprint_millitiles": {
+      "width": 3000,
+      "height": 3000
+    },
+    "footprint_provenance": "user_file",
+    "collision_radius_millitiles": 1500,
+    "target_types": [],
     "can_attack": false,
-
-    "generates_troop_on_destroy": true,
-
-    "spawn_trigger": ["destroyed", "lifetime_expired"]
+    "attackable_by": ["ground_troop", "air_troop", "spell"]
   },
-
-  "spawned_unit": {
-    "provenance": "public_card_stats",
-
-    "card_id": "goblin_brawler",
-
+  "on_destroyed_or_expired": {
+    "provenance": "liquipedia",
+    "triggers": ["cage_destroyed", "lifetime_expired"],
+    "spawns": "goblin_brawler",
     "count": 1,
-
-    "spawn_delay_ticks": 0,
-
-    "inherits_level": true
+    "inherits_level": true,
+    "releases_captured_troops": true
   },
-
   "goblin_brawler": {
-    "provenance": "public_card_stats",
-
-    "hitpoints": 1526,
-
-    "damage": 281,
-
-    "dps": 187,
-
-    "targets": ["ground"],
-
-    "movement_speed": "very_fast",
-    "movement_speed_value": 120,
-
-    "range_tiles": 0.7,
-    "range_millitiles": 700,
-
-    "hit_speed_s": 1.5,
-    "hit_speed_ticks": 30,
-
-    "first_hit_s": 0.4,
-    "first_hit_ticks": 8,
-
-    "sight_range_tiles": 7.5,
-    "sight_range_millitiles": 7500
+    "provenance": "liquipedia + supercell",
+    "hitpoints": 1121,
+    "hitpoints_note": "1080 -> 1121 in the Sept 8 2026 patch. Evolution inherits base changes; the old +10% evo HP bonus is no longer listed.",
+    "damage": 337,
+    "target_types": ["ground_troop", "building", "tower"],
+    "attacks_air": false,
+    "hit_speed_s": 1.1,
+    "hit_speed_ticks": 22,
+    "first_hit_s": 0.2,
+    "first_hit_ticks": 4,
+    "load_time_ticks": 18,
+    "movement_speed_tier": "fast",
+    "speed_millitiles_per_tick": 75,
+    "range_tier": "melee_short",
+    "range_millitiles": 800,
+    "sight_range_millitiles": 5500,
+    "sight_range_provenance": "design_decision (most troops 5.5)",
+    "collision_radius_millitiles": 500,
+    "collision_radius_provenance": "design_decision",
+    "mass": null,
+    "mass_provenance": "unverified",
+    "spawn_position": "cage center",
+    "spawn_delay_ticks": 0
   },
-
   "evolution": {
-    "enabled": true,
-
-    "cycles_required": 2,
-
-    "special_ability": "kiddnaps the nearest enemy troop and drags it to the cage until the cage is destroyed or the troop dies.",
-
-    "description": "When the Goblin Cage breaks, the Goblin Brawler spanws and attacks the nearest ground unit.",
-
-    "rage_effect": {
-      "trigger": "brawler_spawn",
-
-      "radius_tiles": 3.5,
-      "radius_millitiles": 3500,
-
-      "duration_s": 6.0,
-      "duration_ticks": 120
-    }
+    "provenance": "supercell + liquipedia",
+    "elixir": 4,
+    "activation": {
+      "cycles_required": 2,
+      "counter_scope": "per card, per match",
+      "initial_state": "normal",
+      "states": ["NORMAL", "EVO_READY"],
+      "transitions": [
+        {
+          "from": "NORMAL",
+          "event": "play_normal",
+          "effect": "plays_since_last_evo += 1",
+          "to": "EVO_READY",
+          "condition": "plays_since_last_evo >= cycles_required"
+        },
+        {
+          "from": "EVO_READY",
+          "event": "play_evo",
+          "to": "NORMAL",
+          "effect": "plays_since_last_evo = 0"
+        }
+      ],
+      "player_choice": false,
+      "elixir_cost_same_as_normal": true,
+      "next_card_slot_display": "the next-card slot shows the evo form (confirmed for Royal Recruits; assumed the same here)"
+    },
+    "activation_note": "Cycles 1 -> 2 in the Aug 26 2026 patch, so the evo is the 3rd play. This matches 'evo on 3rd use' in DECK.md.",
+    "evo_cage_stats_same_as_base": true,
+    "capture": {
+      "capture_range_millitiles": 3000,
+      "capture_range_origin": "cage center",
+      "capture_range_origin_provenance": "design_decision",
+      "target_types": ["ground_troop"],
+      "capture_cooldown_s": 0.3,
+      "capture_cooldown_ticks": 6,
+      "capture_cooldown_provenance": "supercell (0.5 s -> 0.3 s, Aug 26 2026)",
+      "damage_per_hit": 366,
+      "damage_hit_interval_s": 1.0,
+      "damage_hit_interval_ticks": 20,
+      "damage_provenance": "supercell (337 -> 366 DPS, Aug 26 2026); hit interval from liquipedia",
+      "captured_troop": {
+        "moves": false,
+        "attacks": false,
+        "targetable": false,
+        "stays_until": "the troop dies or the cage is destroyed",
+        "released_when_cage_destroyed": "becomes targetable again"
+      },
+      "max_captured_at_once": null,
+      "max_captured_at_once_status": "unverified: card text says 'enemies' (plural); each capture waits for the cooldown",
+      "which_troops_can_be_captured": "any ground troop in range (champions and heavy troops unverified)"
+    },
+    "evolved_goblin_brawler": "same stats as goblin_brawler above (unverified: evo HP assumed to follow the base 1121)"
   },
-
-  "movement": {
-    "provenance": "app",
-
-    "ground_unit": true,
-
-    "can_cross_river": false,
-
-    "pathfinding_mode": "standard"
-  },
-
-  "targeting": {
-    "provenance": "public_card_stats",
-
-    "primary_targets": ["ground"],
-
-    "attack_preference": "nearest_target"
-  },
-
-  "combat": {
-    "provenance": "public_card_stats",
-
-    "attack_type": "melee",
-
-    "damage_per_hit": 281,
-
-    "attack_interval_ticks": 30,
-
-    "first_attack_ticks": 8,
-
-    "range_millitiles": 700
-  },
-
-  "derived": {
-    "building_hitpoints": 2126,
-
-    "spawned_unit_hitpoints": 1526,
-
-    "combined_hitpoints": 3652,
-
-    "spawned_unit_dps": 187
-  },
-
+  "revision_notes": [
+    "Cage hitpoints 2126 -> 780 (level 11) and lifetime 30 s -> 20 s.",
+    "Brawler: hitpoints 1526 -> 1121, damage 281 -> 337, hit speed 1.5 s -> 1.1 s, first hit 0.4 s -> 0.2 s, range 0.7 -> 0.8 tiles.",
+    "Evolution: removed the invented rage effect and the 'drags the nearest troop' wording; replaced with the real capture mechanic (3 tile range, 0.3 s cooldown, 366 damage per second).",
+    "Evolution cycles 2 kept (confirmed Aug 26 2026)."
+  ],
   "unverified": [
-    "Exact evolution rage duration in engine ticks.",
-    "Exact spawn-frame ordering when cage is destroyed by spells.",
-    "Exact collision radius for the building footprint."
+    "Cage footprint 3x3 and brawler collision radius.(the cage is 3x3 and the brawler is 1x1)",
+    "Brawler mass and sight range.(mass is 2 and sight range is 5.5)",
+    "Capture range measured from the cage center.(3 tiles from cage footprint so 6 tiles from cage center)",
+    "How many troops can be captured at once.(one at a time)",
+    "Whether champions and very heavy troops can be captured.(all troops are capturable)",
+    "Whether the evolved brawler's HP is 1121 or 1080.(brawler HP is 1121)"
   ]
 }

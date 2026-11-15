@@ -1,156 +1,108 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "card_id": "barbarian_barrel",
   "name": "Barbarian Barrel",
-
   "meta": {
     "game_version": "160402020",
     "card_level": 11,
     "level_note": "Tournament standard.",
+    "web_cross_check_date": "2026-11-04",
     "units": {
       "tick_ms": 50,
       "ticks_per_second": 20,
       "tile_millitiles": 1000,
-      "coordinate_system": "origin at arena center; x runs left-right, y runs along lane",
+      "coordinate_system": "origin at arena center; own side is y < 0 (see arena.json)",
       "integer_only": true
+    },
+    "provenance_legend": {
+      "app": "read or measured by the user in the app",
+      "supercell": "official Supercell balance notes",
+      "liquipedia": "Liquipedia Clash Royale wiki",
+      "fandom": "Clash Royale fandom wiki",
+      "web": "other public source named in the field",
+      "user_file": "carried over from your earlier file; not independently confirmed",
+      "derived": "computed from other fields",
+      "design_decision": "simulator rule; verify in-game"
     }
   },
-
   "base": {
-    "provenance": "public_card_stats",
-
+    "provenance": "mixed (see fields)",
     "elixir": 2,
     "rarity": "epic",
     "type": "spell",
-
-    "targets": ["ground"],
-
-    "damage": 219,
-
-    "radius_tiles": 1.2,
+    "target_types": ["ground_troop"],
+    "damage": 215,
+    "damage_provenance": "supercell: 232 -> 215 in the Oct 6 2026 patch (your file said 219)",
     "radius_millitiles": 1200,
-
-    "deploy_time_s": 0.0,
-    "deploy_time_ticks": 0,
-
-    "roll_distance_tiles": 5.0,
+    "radius_provenance": "user_file",
+    "radius_note": "Unclear whether this is a radius or a width. A 2.6-tile figure appears in one old wiki table; confirm in the app.",
     "roll_distance_millitiles": 5000,
-
-    "roll_speed_tiles_per_second": 5.0,
-
-    "spawns_unit": true
-  },
-
-  "barrel": {
-    "provenance": "card_behavior",
-
-    "object_type": "rolling_projectile",
-
-    "can_hit_multiple_targets": true,
-
-    "hits_ground_only": true,
-
+    "roll_distance_provenance": "user_file; old wiki lists 5",
+    "roll_speed_millitiles_per_tick": 250,
+    "roll_speed_provenance": "user_file (5 tiles per second)",
+    "roll_duration_ticks": 20,
+    "launch_delay_ticks": 0,
+    "launch_delay_provenance": "user_file; one low-quality source claims a 1 s delay since Dec 2025",
     "affects_buildings": false,
-
-    "knockback": true,
-
-    "knockback_strength": "light",
-
-    "piercing": true,
-
-    "destroyed_by_damage": false
+    "affects_towers": false,
+    "hits_ground_only": true
   },
-
   "trajectory": {
-    "provenance": "app",
-
+    "provenance": "user_file",
     "path_type": "straight_line",
-
-    "max_distance_millitiles": 5000,
-
+    "direction": "toward the enemy (+y)",
     "stops_at_end_of_path": true,
-
     "can_cross_river": true,
-
-    "collision_check": "continuous"
+    "collision_check": "each tick against every unit the barrel body overlaps",
+    "each_target_hit_once": true,
+    "knockback": {
+      "enabled": true,
+      "distance_millitiles": null,
+      "status": "NEEDS MEASUREMENT"
+    },
+    "piercing": true
   },
-
-  "damage_model": {
-    "provenance": "public_card_stats",
-
-    "damage_application": "contact",
-
-    "damage_per_hit": 219,
-
-    "can_damage_same_target_multiple_times": false,
-
-    "hit_interval_ticks": 0
-  },
-
   "spawned_unit": {
-    "provenance": "public_card_stats",
-
+    "provenance": "mixed",
     "card_id": "barbarian",
-
-    "spawn_trigger": "barrel_end_of_roll",
-
     "count": 1,
-
+    "spawn_trigger": "end_of_roll",
     "spawn_delay_ticks": 0,
-
-    "inherits_level": true,
-
-    "spawn_offset_millitiles": 0
+    "spawn_offset_millitiles": 0,
+    "hitpoints": 670,
+    "hitpoints_note": "Your file said 832. 670 is the level 11 Barbarian value on wiki tables; Aug 2026 raised the Barbarians card to 716, so this may be higher now.",
+    "damage": 192,
+    "target_types": ["ground_troop", "building", "tower"],
+    "attacks_air": false,
+    "hit_speed_s": 1.4,
+    "hit_speed_ticks": 28,
+    "first_hit_s": 0.5,
+    "first_hit_ticks": 10,
+    "first_hit_provenance": "design_decision",
+    "movement_speed_tier": "medium",
+    "speed_millitiles_per_tick": 50,
+    "range_tier": "melee_short",
+    "range_millitiles": 800,
+    "range_note": "Your file said 1.2 tiles; Barbarians use melee short (0.8).",
+    "sight_range_millitiles": 5500,
+    "collision_radius_millitiles": 500,
+    "mass": 5,
+    "radius_mass_provenance": "design_decision"
   },
-
-  "spawned_barbarian": {
-    "provenance": "public_card_stats",
-
-    "hitpoints": 832,
-
-    "damage": 186,
-
-    "dps": 124,
-
-    "targets": ["ground"],
-
-    "movement_speed": "medium",
-
-    "range_tiles": 1.2,
-    "range_millitiles": 1200,
-
-    "hit_speed_s": 1.5,
-    "hit_speed_ticks": 30
-  },
-
   "placement": {
-    "provenance": "app",
-
+    "provenance": "user_file",
     "targeting_mode": "directional_spell",
-
     "requires_destination": true,
-
-    "legal_target_area": "standard_spell_area"
+    "legal_area": "any arena coordinate",
+    "cursor_snaps_to": "tile centers (design_decision)"
   },
-
   "evolution": null,
-
-  "derived": {
-    "initial_spell_damage": 219,
-
-    "spawned_troop_count": 1,
-
-    "combined_value_components": [
-      "rolling_damage",
-      "knockback",
-      "spawned_barbarian"
-    ]
-  },
-
+  "hero_form_note": "A Hero Barbarian Barrel exists but your deck plays the base card.",
   "unverified": [
-    "Exact internal barrel collision radius.",
-    "Exact barrel movement speed in engine units.",
-    "Exact knockback force values.",
-    "Exact spawn frame for Barbarian after barrel expiration."
+    "Barbarian hitpoints, damage and first hit (several sources disagree).(716 hp, 192 damage, 0.4 s first hit)",
+    "Barrel radius versus width.(range is 4.5 tiles, width is 2.6 tiles)",
+    "Launch delay, roll speed, knockback distance.(no launch delay, roll speed is 1 second, no knockback distance)",
+    "Whether the barrel damages crown towers or buildings; assumed not.(damages buildings not crown towers)",
+    "Spawned Barbarian collision radius and mass.(collision radius is 0.5 tiles, mass is 4)"
   ]
 }
